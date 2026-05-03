@@ -1,0 +1,528 @@
+<style>
+    .rj-page * {
+        box-sizing: border-box;
+    }
+
+    .rj-card {
+        background: linear-gradient(135deg, #fffaf5 0%, #f8efe6 100%);
+        border: 1px solid #ead7c5;
+        border-radius: 24px;
+        padding: 26px;
+        box-shadow: 0 14px 34px rgba(92, 62, 38, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .rj-card:before {
+        content: "";
+        position: absolute;
+        top: -40%;
+        left: -60%;
+        width: 45%;
+        height: 180%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+        transform: rotate(25deg);
+        transition: left .8s ease;
+    }
+
+    .rj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 45px rgba(92, 62, 38, 0.14);
+        border-color: #d8b894;
+    }
+
+    .rj-card:hover:before {
+        left: 120%;
+    }
+
+    .rj-mini-card {
+        background: rgba(255, 255, 255, .75);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .rj-mini-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 34px rgba(92, 62, 38, 0.12);
+    }
+
+    .rj-proof-list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin-top: 22px;
+        align-items: center;
+    }
+
+    .rj-proof-img {
+        display: block;
+        width: auto;
+        max-width: 60%;
+        height: auto;
+        border-radius: 18px;
+        border: 2px solid #ead7c5;
+        background: #fffaf5;
+        padding: 6px;
+        box-shadow: 0 14px 34px rgba(92, 62, 38, 0.12);
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .rj-proof-img:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 48px rgba(92, 62, 38, 0.18);
+        border-color: #d8b894;
+    }
+
+    .rj-btn {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff !important;
+        padding: 12px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+    .rj-btn:hover {
+        transform: translateY(-2px);
+        background: #85563A;
+        box-shadow: 0 14px 28px rgba(156, 104, 70, .28);
+    }
+
+    .rj-label {
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #b8895b;
+        font-size: 12px;
+        margin: 0 0 6px;
+        font-weight: 700;
+    }
+
+    .rj-more-reviews {
+        width: 100%;
+        text-align: center;
+    }
+
+    .rj-more-reviews summary {
+        list-style: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #9C6846;
+        color: #fff;
+        padding: 13px 28px;
+        border-radius: 999px;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+        margin: 10px auto 20px;
+        text-align: center;
+        min-width: 210px;
+    }
+
+    .rj-more-reviews summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .rj-more-reviews summary:hover {
+        transform: translateY(-2px);
+        background: #85563A;
+        box-shadow: 0 14px 28px rgba(156, 104, 70, .28);
+    }
+
+    .rj-more-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        align-items: center;
+        margin-top: 18px;
+    }
+
+    /* État fermé */
+    .rj-more-reviews summary .rj-less-text {
+        display: none;
+    }
+
+    /* État ouvert */
+    .rj-more-reviews[open] summary .rj-more-text {
+        display: none;
+    }
+
+    .rj-more-reviews[open] summary .rj-less-text {
+        display: inline;
+    }
+
+    @media (max-width: 640px) {
+        .rj-page {
+            font-size: 15px !important;
+        }
+
+        .rj-grid-2 {
+            grid-template-columns: 1fr !important;
+        }
+
+        .rj-proof-list {
+            gap: 16px;
+        }
+
+        .rj-proof-img {
+            width: auto;
+            max-width: 70%;
+            border-radius: 16px;
+            padding: 5px;
+        }
+    }
+</style>
+
+<div class="rj-page"
+    style="max-width: 980px; margin: 0 auto; line-height: 1.8; font-size: 16px; color: #222; font-family: inherit;">
+
+    <div class="rj-card" style="padding:36px 24px; margin-bottom:32px; text-align:center;">
+        <p class="rj-label">Rachelle Jewellery</p>
+
+        <p style="max-width:720px; margin:0 auto; color:#555;">
+            Découvrez des retours réels de clientes ayant commandé nos montres, bijoux et accessoires.
+            Une page pensée pour vous rassurer avant votre commande.
+        </p>
+    </div>
+
+    <div class="rj-grid-2" style="display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin:24px 0;">
+        <div class="rj-mini-card">✔️ Produits reçus conformes</div>
+        <div class="rj-mini-card">✔️ Paiement à la livraison</div>
+        <div class="rj-mini-card">✔️ Livraison dans plusieurs wilayas</div>
+        <div class="rj-mini-card">✔️ Clientes satisfaites</div>
+    </div>
+
+    <!-- SECTION MONTRES -->
+    <div style="margin-top:46px;">
+        <p class="rj-label">Montres IEKE</p>
+
+        <h2 style="font-size:26px; margin:0 0 10px;">
+            Avis clientes sur nos montres
+        </h2>
+
+        <p style="color:#555; margin-bottom:22px;">
+            Retours réels de clientes ayant commandé nos montres IEKE femme.
+        </p>
+
+        <div class="rj-proof-list">
+
+            <!-- 10 premiers avis montres visibles -->
+            <img class="rj-proof-img"
+                src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/img1.webp?v=1777815855"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/9.webp?v=1777815854"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img"
+                src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp-Image-2026-05-01-at-20.31.47-_6.webp?v=1777827468"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img"
+                src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/img4.webp?v=1777815855"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/11.webp?v=1777815854"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/12.webp?v=1777815854"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/5.webp?v=1777815855"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/10.webp?v=1777815854"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/7.webp?v=1777815854"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/8.webp?v=1777815855"
+                alt="Avis cliente montre IEKE Rachelle Jewellery">
+            <!-- Le reste des avis montres caché -->
+            <details class="rj-more-reviews">
+                <summary>
+                    <span class="rj-more-text">Afficher plus d’avis</span>
+                    <span class="rj-less-text">Afficher moins</span>
+                </summary>
+
+                <div class="rj-more-inner">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/img3.webp?v=1777815855"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/img2.webp?v=1777815854"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/6.webp?v=1777815854"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/13.webp?v=1777815854"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp-Image-2026-05-01-at-20.31.48-_1.webp?v=1777827469"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp-Image-2026-05-01-at-20.31.47-_1.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp-Image-2026-05-01-at-20.31.47-_8.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/14.webp?v=1777815855"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_6.webp?v=1777827467"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp-Image-2026-05-01-at-20.31.47-_4.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_10.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.52.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.52_6.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp-Image-2026-05-01-at-20.31.47-_9.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.51_3.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_11.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp-Image-2026-05-01-at-20.31.47.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.49_1.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.51_5.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.52_1.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.51_2.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.51_4.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.51_1.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_12.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.51_6.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.49_3.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.49_4.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_7.webp?v=1777827467"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_8.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_3.webp?v=1777827467"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.49_14.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_2.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_5.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_15.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.52_4.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp-Image-2026-05-01-at-20.31.47-_10.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.52_5.webp?v=1777827467"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.49_09.webp?v=1777827467"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.49.webp?v=1777827467"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                    <img class="rj-proof-img"
+                        src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/WhatsApp_Image_2026-05-01_at_20.31.48_14.webp?v=1777827468"
+                        alt="Avis cliente montre IEKE Rachelle Jewellery">
+                </div>
+            </details>
+
+        </div>
+
+        <div class="rj-card" style="margin:34px 0;">
+            <p class="rj-label">Collection montres</p>
+            <h3 style="margin:0 0 10px; font-size:22px; color:#111;">
+                Découvrir nos montres IEKE
+            </h3>
+            <p style="color:#555; margin-bottom:18px;">
+                Des modèles élégants pour femme, disponibles avec paiement à la livraison.
+            </p>
+            <a href="https://rachellejewellery.com/collections/montre-ieke-algerie" class="rj-btn">
+                Voir les montres IEKE
+            </a>
+        </div>
+    </div>
+
+    <!-- SECTION BIJOUX -->
+    <div style="margin-top:48px;">
+        <p class="rj-label">Bijoux &amp; accessoires</p>
+
+        <h2 style="font-size:26px; margin:0 0 10px;">
+            Avis clientes sur nos bijoux et accessoires
+        </h2>
+
+        <p style="color:#555; margin-bottom:22px;">
+            Retours sur nos boucles d’oreilles, bracelets, chaînes et accessoires féminins.
+        </p>
+
+        <div class="rj-proof-list">
+
+            <img class="rj-proof-img"
+                src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/3_8047f9b3-0db9-41e5-938a-657f2d7a2a2f.webp?v=1777666683"
+                alt="Avis cliente bijoux Rachelle Jewellery">
+
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/2.webp?v=1777666684"
+                alt="Avis cliente bijoux Rachelle Jewellery">
+
+            <img class="rj-proof-img"
+                src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/4_c1c8aa56-4a9c-4c84-ab9a-568a79f762af.webp?v=1777666683"
+                alt="Avis cliente accessoires Rachelle Jewellery">
+
+            <img class="rj-proof-img" src="https://cdn.shopify.com/s/files/1/0906/6928/5709/files/1.webp?v=1777666683"
+                alt="Avis cliente accessoires Rachelle Jewellery">
+
+        </div>
+
+        <div class="rj-card" style="margin:34px 0;">
+            <p class="rj-label">Bijoux &amp; accessoires</p>
+            <h3 style="margin:0 0 10px; font-size:22px; color:#111;">
+                Découvrir nos bijoux
+            </h3>
+            <p style="color:#555; margin-bottom:18px;">
+                Boucles d’oreilles, bracelets, chaînes et accessoires sélectionnés avec soin.
+            </p>
+            <a href="https://rachellejewellery.com/collections/accessoires-bijoux-algerie" class="rj-btn">
+                Voir les accessoires
+            </a>
+        </div>
+    </div>
+
+    <!-- TRUST FINAL -->
+    <div class="rj-card" style="margin-top:46px;">
+        <p class="rj-label">Confiance &amp; sécurité</p>
+
+        <h2 style="font-size:24px; margin:0 0 14px; color:#111;">
+            Pourquoi nos clientes nous font confiance ?
+        </h2>
+
+        <ul style="padding-left:22px; margin-bottom:0; color:#333;">
+            <li>Produits sélectionnés avec soin</li>
+            <li>Design élégant et tendance</li>
+            <li>Paiement à la livraison</li>
+            <li>Livraison dans toute l’Algérie</li>
+            <li>Service client réactif avant et après commande</li>
+        </ul>
+    </div>
+
+    <!-- SECTION RATING -->
+    <div style="margin-top:48px;">
+        <p class="rj-label">Satisfaction clientes</p>
+
+        <h2 style="font-size:26px; margin:0 0 10px;">
+            Évaluation globale de nos clientes
+        </h2>
+
+        <p style="color:#555;">
+            Estimation basée sur les retours reçus de nos clientes.
+        </p>
+
+        <div class="rj-card" style="margin:24px 0;">
+
+            <div style="text-align:center; margin-bottom:28px;">
+                <div style="font-size:48px; font-weight:800; color:#111;">4.8/5</div>
+                <div style="font-size:25px; color:#d6a84f; letter-spacing:2px;">★★★★★</div>
+                <p style="margin:8px 0 0; color:#555;">
+                    Note moyenne estimée à partir des avis clientes
+                </p>
+            </div>
+
+            <div style="margin-bottom:18px;">
+                <div style="display:flex; justify-content:space-between; gap:12px;">
+                    <strong>Qualité des produits</strong>
+                    <span style="color:#d6a84f;">★★★★★ <strong style="color:#222;">4.9</strong></span>
+                </div>
+                <div style="height:9px; background:#f1e7dc; border-radius:99px; overflow:hidden; margin-top:8px;">
+                    <div style="width:98%; height:9px; background:linear-gradient(90deg,#b8895b,#d6a84f);"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:18px;">
+                <div style="display:flex; justify-content:space-between; gap:12px;">
+                    <strong>Rapport qualité/prix</strong>
+                    <span style="color:#d6a84f;">★★★★★ <strong style="color:#222;">4.8</strong></span>
+                </div>
+                <div style="height:9px; background:#f1e7dc; border-radius:99px; overflow:hidden; margin-top:8px;">
+                    <div style="width:96%; height:9px; background:linear-gradient(90deg,#b8895b,#d6a84f);"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:18px;">
+                <div style="display:flex; justify-content:space-between; gap:12px;">
+                    <strong>Packaging</strong>
+                    <span style="color:#d6a84f;">★★★★★ <strong style="color:#222;">4.7</strong></span>
+                </div>
+                <div style="height:9px; background:#f1e7dc; border-radius:99px; overflow:hidden; margin-top:8px;">
+                    <div style="width:94%; height:9px; background:linear-gradient(90deg,#b8895b,#d6a84f);"></div>
+                </div>
+            </div>
+
+            <div style="margin-bottom:18px;">
+                <div style="display:flex; justify-content:space-between; gap:12px;">
+                    <strong>Rapidité de livraison</strong>
+                    <span style="color:#d6a84f;">★★★★☆ <strong style="color:#222;">4.5</strong></span>
+                </div>
+                <div style="height:9px; background:#f1e7dc; border-radius:99px; overflow:hidden; margin-top:8px;">
+                    <div style="width:90%; height:9px; background:linear-gradient(90deg,#b8895b,#d6a84f);"></div>
+                </div>
+            </div>
+
+            <div>
+                <div style="display:flex; justify-content:space-between; gap:12px;">
+                    <strong>Service client</strong>
+                    <span style="color:#d6a84f;">★★★★★ <strong style="color:#222;">4.9</strong></span>
+                </div>
+                <div style="height:9px; background:#f1e7dc; border-radius:99px; overflow:hidden; margin-top:8px;">
+                    <div style="width:98%; height:9px; background:linear-gradient(90deg,#b8895b,#d6a84f);"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
