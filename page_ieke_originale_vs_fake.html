@@ -1,0 +1,416 @@
+<style>
+    .rj-page * {
+        box-sizing: border-box;
+    }
+
+    .rj-card {
+        background: linear-gradient(135deg, #fffaf5 0%, #f8efe6 100%);
+        border: 1px solid #ead7c5;
+        border-radius: 24px;
+        padding: 26px;
+        box-shadow: 0 14px 34px rgba(92, 62, 38, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .rj-card:before {
+        content: "";
+        position: absolute;
+        top: -40%;
+        left: -60%;
+        width: 45%;
+        height: 180%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+        transform: rotate(25deg);
+        transition: left .8s ease;
+    }
+
+    .rj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 45px rgba(92, 62, 38, 0.14);
+        border-color: #d8b894;
+    }
+
+    .rj-card:hover:before {
+        left: 120%;
+    }
+
+    .rj-mini-card {
+        background: rgba(255, 255, 255, .78);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .rj-mini-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 34px rgba(92, 62, 38, 0.12);
+    }
+
+    .rj-label {
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #b8895b;
+        font-size: 12px;
+        margin: 0 0 6px;
+        font-weight: 700;
+    }
+
+    .rj-btn {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff !important;
+        padding: 12px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+    .rj-btn:hover {
+        transform: translateY(-2px);
+        background: #85563A;
+        box-shadow: 0 14px 28px rgba(156, 104, 70, .28);
+    }
+
+    .rj-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .rj-list {
+        padding-left: 22px;
+        margin-bottom: 0;
+        color: #333;
+    }
+
+    .rj-list li {
+        margin-bottom: 8px;
+    }
+
+    .rj-step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        background: #9C6846;
+        color: #fff;
+        border-radius: 999px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+    }
+
+    .rj-warning {
+        background: #fffaf5;
+        border: 1px solid #ead7c5;
+        border-left: 5px solid #9C6846;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+    }
+
+    .rj-faq-item {
+        background: rgba(255,255,255,.72);
+        border: 1px solid #ead7c5;
+        border-radius: 18px;
+        padding: 18px;
+        margin-bottom: 14px;
+        box-shadow: 0 8px 22px rgba(92, 62, 38, 0.05);
+    }
+
+    .rj-faq-item h3 {
+        font-size: 19px;
+        margin: 0 0 8px;
+        color: #111;
+    }
+
+    .rj-faq-item p {
+        margin: 0;
+        color: #555;
+    }
+
+    .rj-link {
+        color: #9C6846;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .rj-link:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+        .rj-page {
+            font-size: 15px !important;
+        }
+
+        .rj-grid-2 {
+            grid-template-columns: 1fr !important;
+        }
+
+        .rj-card {
+            padding: 22px;
+            border-radius: 22px;
+        }
+    }
+</style>
+
+<div class="rj-page" style="max-width: 980px; margin: 0 auto; line-height: 1.8; font-size: 16px; color: #222; font-family: inherit;">
+
+    <!-- INTRO PREMIUM -->
+    <div class="rj-card" style="padding:36px 24px; margin-bottom:32px; text-align:center;">
+        <p class="rj-label">Guide authenticité IEKE</p>
+
+        <h1 style="font-size:32px; line-height:1.3; margin:0 0 14px; color:#111;">
+            Comment reconnaître une montre IEKE originale ?
+        </h1>
+
+        <p style="max-width:740px; margin:0 auto; color:#555;">
+            Les montres IEKE sont devenues très populaires en Algérie grâce à leur design élégant,
+            leurs finitions soignées et leur style féminin. Avant d’acheter, voici les détails à vérifier
+            pour choisir une montre de bonne qualité et éviter les modèles de qualité inférieure.
+        </p>
+    </div>
+
+    <!-- MESSAGE IMPORTANT -->
+    <div class="rj-warning" style="margin:24px 0 32px;">
+        <p class="rj-label">À retenir</p>
+        <p style="margin:0; color:#555;">
+            Une montre IEKE de bonne qualité doit donner une impression soignée dès le premier contact :
+            design propre, bracelet confortable, cadran bien fini, détails cohérents et présentation sérieuse.
+        </p>
+    </div>
+
+    <!-- MINI CARTES -->
+    <div class="rj-grid-2" style="margin:24px 0 34px;">
+        <div class="rj-mini-card">✔️ Vérifier la finition</div>
+        <div class="rj-mini-card">✔️ Observer le cadran</div>
+        <div class="rj-mini-card">✔️ Contrôler le bracelet</div>
+        <div class="rj-mini-card">✔️ Choisir un vendeur fiable</div>
+    </div>
+
+    <!-- ÉTAPE 1 -->
+    <div class="rj-card" style="margin:32px 0;">
+        <span class="rj-step-number">1</span>
+
+        <p class="rj-label">Finition générale</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Vérifier la qualité de finition
+        </h2>
+
+        <p style="color:#555;">
+            Le premier élément à observer est la finition générale de la montre. Une montre IEKE de bonne qualité
+            présente normalement des lignes propres, un cadran bien aligné et des détails précis.
+        </p>
+
+        <p style="color:#555;">
+            Les éléments décoratifs doivent être bien placés, sans défaut visible, sans aspect négligé
+            et sans impression de produit fragile.
+        </p>
+
+        <ul class="rj-list">
+            <li>Cadran bien aligné</li>
+            <li>Couleur régulière</li>
+            <li>Détails propres</li>
+            <li>Aucun défaut visible au premier regard</li>
+        </ul>
+    </div>
+
+    <!-- ÉTAPE 2 -->
+    <div class="rj-card" style="margin:32px 0;">
+        <span class="rj-step-number">2</span>
+
+        <p class="rj-label">Cadran</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Observer le cadran de la montre
+        </h2>
+
+        <p style="color:#555;">
+            Le cadran est l’un des détails les plus importants. Sur une montre IEKE de bonne qualité,
+            le cadran doit être propre, lisible et élégant.
+        </p>
+
+        <p style="color:#555;">
+            Les index, les chiffres, les aiguilles et le logo doivent être bien positionnés.
+            Si le cadran semble flou, mal imprimé ou déséquilibré, c’est un signal d’alerte.
+        </p>
+
+        <ul class="rj-list">
+            <li>Logo bien placé</li>
+            <li>Index bien alignés</li>
+            <li>Impression nette</li>
+            <li>Aiguilles propres et équilibrées</li>
+        </ul>
+    </div>
+
+    <!-- ÉTAPE 3 -->
+    <div class="rj-grid-2" style="margin:32px 0;">
+        <div class="rj-card">
+            <span class="rj-step-number">3</span>
+
+            <p class="rj-label">Bracelet cuir</p>
+
+            <h2 style="font-size:24px; margin:0 0 10px; color:#111;">
+                Contrôler le bracelet cuir
+            </h2>
+
+            <p style="color:#555;">
+                Le bracelet cuir doit être souple, confortable et agréable au poignet.
+                Il doit aussi être bien fixé au cadran.
+            </p>
+
+            <p style="margin-bottom:0; color:#333;">
+                À éviter : bracelet trop rigide, couture faible, matière inconfortable.
+            </p>
+        </div>
+
+        <div class="rj-card">
+            <span class="rj-step-number">4</span>
+
+            <p class="rj-label">Bracelet acier</p>
+
+            <h2 style="font-size:24px; margin:0 0 10px; color:#111;">
+                Contrôler le bracelet acier
+            </h2>
+
+            <p style="color:#555;">
+                Le bracelet acier doit donner une impression de solidité, de finition moderne
+                et de cohérence avec le design de la montre.
+            </p>
+
+            <p style="margin-bottom:0; color:#333;">
+                À éviter : bracelet trop léger, assemblage faible, finition irrégulière.
+            </p>
+        </div>
+    </div>
+
+    <!-- ÉTAPE 4 PRIX -->
+    <div class="rj-card" style="margin:32px 0;">
+        <span class="rj-step-number">5</span>
+
+        <p class="rj-label">Prix du marché</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Comparer le prix avec le marché
+        </h2>
+
+        <p style="color:#555;">
+            En Algérie, le prix d’une montre IEKE varie selon le modèle, le design, le bracelet
+            et la disponibilité. Un prix trop bas peut parfois cacher une imitation ou un produit
+            de qualité inférieure.
+        </p>
+
+        <p style="color:#555;">
+            Il ne faut pas regarder uniquement le prix. Il faut aussi vérifier la qualité du produit,
+            les photos réelles, les conditions de livraison et la fiabilité de la boutique.
+        </p>
+    </div>
+
+    <!-- ÉTAPE 5 VENDEUR -->
+    <div class="rj-card" style="margin:32px 0;">
+        <span class="rj-step-number">6</span>
+
+        <p class="rj-label">Boutique fiable</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Acheter auprès d’une boutique fiable
+        </h2>
+
+        <p style="color:#555;">
+            Le vendeur joue un rôle important. Une boutique sérieuse doit présenter clairement ses produits,
+            afficher les informations importantes, proposer un moyen de contact et expliquer les conditions
+            de livraison.
+        </p>
+
+        <p style="color:#555;">
+            Chez <strong>Rachelle Jewellery</strong>, nous sélectionnons soigneusement nos montres IEKE
+            pour proposer des modèles élégants, féminins et adaptés au marché algérien.
+        </p>
+
+        <ul class="rj-list">
+            <li>Photos claires du produit</li>
+            <li>Paiement à la livraison</li>
+            <li>Contact disponible avant commande</li>
+            <li>Livraison dans plusieurs wilayas</li>
+        </ul>
+    </div>
+
+    <!-- CTA COLLECTION -->
+    <div class="rj-card" style="text-align:center; margin:34px 0;">
+        <p class="rj-label">Collection disponible</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Découvrez notre collection IEKE
+        </h2>
+
+        <p style="max-width:720px; margin:0 auto 20px; color:#555;">
+            Retrouvez nos montres IEKE femme disponibles en Algérie : modèles avec bracelet cuir,
+            bracelet acier, designs élégants et paiement à la livraison.
+        </p>
+
+        <a href="https://rachellejewellery.com/collections/montre-ieke-algerie" class="rj-btn">
+            Voir les montres IEKE disponibles
+        </a>
+    </div>
+
+    <!-- FAQ -->
+    <div style="margin-top:44px;">
+        <p class="rj-label">Questions fréquentes</p>
+
+        <h2 style="font-size:26px; margin:0 0 18px; color:#111;">
+            Questions fréquentes sur les montres IEKE
+        </h2>
+
+        <div class="rj-faq-item">
+            <h3>Comment savoir si une montre IEKE est originale ?</h3>
+            <p>
+                Vérifiez la finition, le cadran, le bracelet, le poids et la cohérence générale du modèle.
+                Une montre de bonne qualité doit paraître soignée dès le premier regard.
+            </p>
+        </div>
+
+        <div class="rj-faq-item">
+            <h3>Quels détails vérifier avant d’acheter ?</h3>
+            <p>
+                Regardez le cadran, les index, le bracelet, la finition, les photos réelles du produit
+                et la fiabilité du vendeur.
+            </p>
+        </div>
+
+        <div class="rj-faq-item">
+            <h3>Est-ce que les montres IEKE sont disponibles en Algérie ?</h3>
+            <p>
+                Oui, plusieurs modèles de montres IEKE femme sont disponibles en Algérie,
+                notamment avec bracelet cuir ou acier.
+            </p>
+        </div>
+
+        <div class="rj-faq-item">
+            <h3>Est-ce que Rachelle propose le paiement à la livraison ?</h3>
+            <p>
+                Oui, le paiement à la livraison est disponible pour faciliter l’achat
+                et rassurer les clientes avant la réception.
+            </p>
+        </div>
+
+        <div class="rj-faq-item">
+            <h3>Où acheter une montre IEKE femme en Algérie ?</h3>
+            <p>
+                Vous pouvez consulter notre collection complète ici :
+                <a href="https://rachellejewellery.com/collections/montre-ieke-algerie" class="rj-link">
+                    montres IEKE femme en Algérie
+                </a>.
+            </p>
+        </div>
+    </div>
+
+</div>
