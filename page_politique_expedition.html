@@ -1,0 +1,375 @@
+<style>
+    .rj-page * {
+        box-sizing: border-box;
+    }
+
+    .rj-card {
+        background: linear-gradient(135deg, #fffaf5 0%, #f8efe6 100%);
+        border: 1px solid #ead7c5;
+        border-radius: 24px;
+        padding: 26px;
+        box-shadow: 0 14px 34px rgba(92, 62, 38, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .rj-card:before {
+        content: "";
+        position: absolute;
+        top: -40%;
+        left: -60%;
+        width: 45%;
+        height: 180%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+        transform: rotate(25deg);
+        transition: left .8s ease;
+    }
+
+    .rj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 45px rgba(92, 62, 38, 0.14);
+        border-color: #d8b894;
+    }
+
+    .rj-card:hover:before {
+        left: 120%;
+    }
+
+    .rj-mini-card {
+        background: rgba(255, 255, 255, .78);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .rj-mini-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 34px rgba(92, 62, 38, 0.12);
+    }
+
+    .rj-label {
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #b8895b;
+        font-size: 12px;
+        margin: 0 0 6px;
+        font-weight: 700;
+    }
+
+    .rj-btn {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff !important;
+        padding: 12px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+    .rj-btn:hover {
+        transform: translateY(-2px);
+        background: #85563A;
+        box-shadow: 0 14px 28px rgba(156, 104, 70, .28);
+    }
+
+    .rj-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .rj-list {
+        padding-left: 22px;
+        margin-bottom: 0;
+        color: #333;
+    }
+
+    .rj-list li {
+        margin-bottom: 8px;
+    }
+
+    .rj-step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        background: #9C6846;
+        color: #fff;
+        border-radius: 999px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+    }
+
+    .rj-warning {
+        background: #fffaf5;
+        border: 1px solid #ead7c5;
+        border-left: 5px solid #9C6846;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+    }
+
+    .rj-policy-item {
+        background: rgba(255,255,255,.72);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 22px;
+        margin-bottom: 18px;
+        box-shadow: 0 10px 26px rgba(92, 62, 38, 0.06);
+    }
+
+    .rj-policy-item h2 {
+        font-size: 23px;
+        line-height: 1.35;
+        margin: 0 0 10px;
+        color: #111;
+    }
+
+    .rj-policy-item p {
+        margin: 0;
+        color: #555;
+    }
+
+    .rj-delivery-badge {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 999px;
+        font-weight: 700;
+        margin-top: 10px;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .20);
+    }
+
+    .rj-link {
+        color: #9C6846;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .rj-link:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+        .rj-page {
+            font-size: 15px !important;
+        }
+
+        .rj-grid-2 {
+            grid-template-columns: 1fr !important;
+        }
+
+        .rj-card,
+        .rj-policy-item {
+            padding: 22px;
+            border-radius: 22px;
+        }
+    }
+</style>
+
+<div class="rj-page" style="max-width: 980px; margin: 0 auto; line-height: 1.8; font-size: 16px; color: #222; font-family: inherit;">
+
+    <!-- INTRO PREMIUM -->
+    <div class="rj-card" style="padding:36px 24px; margin-bottom:32px; text-align:center;">
+        <p class="rj-label">Rachelle Jewellery</p>
+
+        <h1 style="font-size:32px; line-height:1.3; margin:0 0 14px; color:#111;">
+            Politique d’expédition
+        </h1>
+
+        <p style="margin:0 0 12px; font-size:14px; color:#6b6b6b;">
+            <strong>Dernière mise à jour :</strong> 03 Avril 2026
+        </p>
+
+        <p style="max-width:760px; margin:0 auto; color:#555;">
+            Chez <strong>Rachelle Jewellery</strong>, nous faisons de notre mieux pour vous offrir une expérience
+            d’achat simple, rapide et fiable. Cette politique d’expédition explique les conditions de traitement,
+            d’envoi et de livraison des commandes passées sur <strong>rachellejewellery.com</strong>.
+        </p>
+
+        <span class="rj-delivery-badge">
+            Paiement à la livraison disponible
+        </span>
+    </div>
+
+    <!-- MINI CARTES -->
+    <div class="rj-grid-2" style="margin:24px 0 34px;">
+        <div class="rj-mini-card">✔️ Livraison selon les wilayas desservies</div>
+        <div class="rj-mini-card">✔️ Confirmation possible par téléphone</div>
+        <div class="rj-mini-card">✔️ Préparation après validation</div>
+        <div class="rj-mini-card">✔️ Paiement à la livraison</div>
+    </div>
+
+    <!-- À RETENIR -->
+    <div class="rj-warning" style="margin:24px 0 34px;">
+        <p class="rj-label">À retenir</p>
+        <p style="margin:0; color:#555;">
+            Pour assurer une livraison rapide et éviter les retards, merci de fournir un numéro joignable,
+            une wilaya correcte, une commune claire et une adresse complète lorsque cela est nécessaire.
+            Les commandes non confirmées ou incomplètes peuvent être annulées.
+        </p>
+    </div>
+
+    <!-- 1 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">1</span>
+
+        <h2>Zones de livraison</h2>
+
+        <p>
+            Nous assurons la livraison de nos commandes dans les wilayas desservies par nos partenaires logistiques.
+            La disponibilité du service peut varier selon la zone de livraison, l’accessibilité de l’adresse
+            et les conditions appliquées par le transporteur.
+        </p>
+    </div>
+
+    <!-- 2 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">2</span>
+
+        <h2>Traitement des commandes</h2>
+
+        <p>
+            Les commandes sont traitées après validation des informations fournies par le client.
+            Selon les cas, une confirmation par téléphone ou via WhatsApp peut être effectuée avant expédition.
+            Les commandes non confirmées, incomplètes ou contenant des informations incorrectes peuvent être annulées.
+        </p>
+    </div>
+
+    <!-- 3 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">3</span>
+
+        <h2>Délais de préparation</h2>
+
+        <p>
+            Après confirmation, les commandes sont généralement préparées dans un délai de
+            <strong>24 heures ouvrables</strong>. Ce délai peut varier en période de forte demande,
+            pendant les promotions ou en cas de contrainte exceptionnelle.
+        </p>
+    </div>
+
+    <!-- 4 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">4</span>
+
+        <h2>Délais de livraison</h2>
+
+        <p style="margin-bottom:12px;">
+            Les délais de livraison sont donnés à titre indicatif et peuvent varier selon la wilaya,
+            l’accessibilité de l’adresse et les conditions logistiques.
+        </p>
+
+        <ul class="rj-list">
+            <li><strong>Alger et zones proches :</strong> généralement sous 24 à 48 heures après expédition</li>
+            <li><strong>Autres wilayas :</strong> généralement sous 2 à 5 jours ouvrables après expédition</li>
+            <li><strong>Zones plus éloignées ou moins desservies :</strong> un délai supplémentaire peut être nécessaire</li>
+        </ul>
+    </div>
+
+    <!-- 5 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">5</span>
+
+        <h2>Frais d’expédition</h2>
+
+        <p>
+            Les frais d’expédition peuvent varier selon la wilaya, le mode de livraison disponible
+            et les conditions appliquées par notre partenaire logistique. Le montant communiqué au moment
+            de la commande est celui à régler à la livraison, sauf indication contraire.
+        </p>
+    </div>
+
+    <!-- 6 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">6</span>
+
+        <h2>Paiement à la livraison</h2>
+
+        <p>
+            Sauf mention contraire, les commandes sont payables à la livraison. Le client s’engage à être joignable,
+            à suivre la confirmation de commande si nécessaire et à réceptionner le colis dans les conditions convenues.
+        </p>
+    </div>
+
+    <!-- 7 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">7</span>
+
+        <h2>Suivi et communication</h2>
+
+        <p>
+            Après expédition, le client peut nous contacter via les moyens de contact affichés sur notre boutique
+            pour obtenir des informations sur l’avancement de sa commande. Nous faisons notre maximum pour assurer
+            un suivi clair et réactif.
+        </p>
+    </div>
+
+    <!-- 8 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">8</span>
+
+        <h2>Retards éventuels</h2>
+
+        <p>
+            Bien que nous nous efforcions de respecter les délais annoncés, certains retards peuvent survenir
+            indépendamment de notre volonté, notamment en raison de contraintes logistiques, d’une forte activité,
+            de conditions météorologiques défavorables ou de difficultés d’accès à certaines zones.
+            Dans ce cas, nous vous remercions pour votre compréhension.
+        </p>
+    </div>
+
+    <!-- 9 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">9</span>
+
+        <h2>Adresse et informations du client</h2>
+
+        <p>
+            Afin d’assurer une livraison correcte, le client doit fournir des informations exactes et complètes :
+            nom, numéro de téléphone, wilaya, commune et adresse détaillée si nécessaire.
+            Nous ne pourrons être tenus responsables d’un retard ou d’un échec de livraison en cas
+            d’informations erronées ou incomplètes.
+        </p>
+    </div>
+
+    <!-- 10 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">10</span>
+
+        <h2>Refus de colis et commandes non réceptionnées</h2>
+
+        <p>
+            Toute commande confirmée engage le client à réceptionner son colis. En cas de refus abusif,
+            d’absence répétée ou d’informations trompeuses, nous nous réservons le droit de refuser
+            de futures commandes.
+        </p>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="rj-card" style="text-align:center; margin:34px 0;">
+        <p class="rj-label">Besoin d’aide ?</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Contact concernant l’expédition
+        </h2>
+
+        <p style="max-width:720px; margin:0 auto 20px; color:#555;">
+            Pour toute question concernant l’expédition de votre commande, vous pouvez nous contacter via
+            les moyens de contact disponibles sur <strong>rachellejewellery.com</strong>.
+        </p>
+
+        <a href="https://rachellejewellery.com/pages/contact" class="rj-btn">
+            Contacter le service client
+        </a>
+    </div>
+
+</div>
