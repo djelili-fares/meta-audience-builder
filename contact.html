@@ -1,0 +1,385 @@
+<style>
+    .rj-page * {
+        box-sizing: border-box;
+    }
+
+    .rj-card {
+        background: linear-gradient(135deg, #fffaf5 0%, #f8efe6 100%);
+        border: 1px solid #ead7c5;
+        border-radius: 24px;
+        padding: 26px;
+        box-shadow: 0 14px 34px rgba(92, 62, 38, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .rj-card:before {
+        content: "";
+        position: absolute;
+        top: -40%;
+        left: -60%;
+        width: 45%;
+        height: 180%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+        transform: rotate(25deg);
+        transition: left .8s ease;
+    }
+
+    .rj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 45px rgba(92, 62, 38, 0.14);
+        border-color: #d8b894;
+    }
+
+    .rj-card:hover:before {
+        left: 120%;
+    }
+
+    .rj-mini-card {
+        background: rgba(255, 255, 255, .78);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+        transition: transform .3s ease, box-shadow .3s ease;
+        text-align: left;
+    }
+
+    .rj-mini-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 34px rgba(92, 62, 38, 0.12);
+    }
+
+    .rj-label {
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #b8895b;
+        font-size: 12px;
+        margin: 0 0 6px;
+        font-weight: 700;
+    }
+
+    .rj-btn {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff !important;
+        padding: 12px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+        margin: 6px;
+    }
+
+    .rj-btn:hover {
+        transform: translateY(-2px);
+        background: #85563A;
+        box-shadow: 0 14px 28px rgba(156, 104, 70, .28);
+    }
+
+    .rj-btn-light {
+        display: inline-block;
+        background: #fff;
+        color: #9C6846 !important;
+        padding: 12px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        border: 1px solid #ead7c5;
+        box-shadow: 0 10px 22px rgba(92, 62, 38, .08);
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+        margin: 6px;
+    }
+
+    .rj-btn-light:hover {
+        transform: translateY(-2px);
+        border-color: #d8b894;
+        box-shadow: 0 14px 28px rgba(92, 62, 38, .14);
+    }
+
+    .rj-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .rj-step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        background: #9C6846;
+        color: #fff;
+        border-radius: 999px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+    }
+
+    .rj-warning {
+        background: #fffaf5;
+        border: 1px solid #ead7c5;
+        border-left: 5px solid #9C6846;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+        text-align: left;
+    }
+
+    .rj-contact-box {
+        background: rgba(255,255,255,.72);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 18px;
+        box-shadow: 0 10px 26px rgba(92, 62, 38, 0.06);
+        text-align: left;
+    }
+
+    .rj-contact-box h2 {
+        font-size: 23px;
+        line-height: 1.35;
+        margin: 0 0 10px;
+        color: #111;
+    }
+
+    .rj-contact-box p {
+        margin: 0;
+        color: #555;
+    }
+
+    .rj-contact-badge {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 999px;
+        font-weight: 700;
+        margin-top: 10px;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .20);
+    }
+
+    .rj-info-list {
+        list-style: none;
+        padding: 0;
+        margin: 16px 0 0;
+    }
+
+    .rj-info-list li {
+        background: rgba(255,255,255,.72);
+        border: 1px solid #ead7c5;
+        border-radius: 16px;
+        padding: 13px 15px;
+        margin-bottom: 10px;
+        color: #333;
+        box-shadow: 0 8px 18px rgba(92, 62, 38, 0.05);
+    }
+
+    .rj-info-list li:before {
+        content: "✔";
+        color: #9C6846;
+        font-weight: 800;
+        margin-right: 8px;
+    }
+
+    .rj-contact-method {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-top: 18px;
+    }
+
+    .rj-method-card {
+        background: #fff;
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+        text-align: center;
+    }
+
+    .rj-method-card h3 {
+        font-size: 20px;
+        margin: 0 0 8px;
+        color: #111;
+    }
+
+    .rj-method-card p {
+        color: #555;
+        margin: 0 0 14px;
+    }
+
+    @media (max-width: 640px) {
+        .rj-page {
+            font-size: 15px !important;
+        }
+
+        .rj-grid-2,
+        .rj-contact-method {
+            grid-template-columns: 1fr !important;
+        }
+
+        .rj-card,
+        .rj-contact-box {
+            padding: 22px;
+            border-radius: 22px;
+        }
+
+        .rj-btn,
+        .rj-btn-light {
+            width: 100%;
+            text-align: center;
+            margin: 6px 0;
+        }
+    }
+</style>
+
+<div class="rj-page" style="max-width: 980px; margin: 0 auto; line-height: 1.8; font-size: 16px; color: #222; font-family: inherit;">
+
+    <!-- INTRO -->
+    <div class="rj-card" style="padding:36px 24px; margin-bottom:32px; text-align:center;">
+        <p class="rj-label">Rachelle Jewellery</p>
+
+        <h1 style="font-size:32px; line-height:1.3; margin:0 0 14px; color:#111;">
+            Contactez-nous
+        </h1>
+
+        <p style="max-width:760px; margin:0 auto; color:#555;">
+            Une question sur une commande, une livraison, un produit ou un échange ?
+            Notre équipe est disponible pour vous accompagner et vous répondre dans les meilleurs délais.
+        </p>
+
+        <span class="rj-contact-badge">
+            Service client Rachelle Jewellery
+        </span>
+    </div>
+
+    <!-- MINI CARTES -->
+    <div class="rj-grid-2" style="margin:24px 0 34px;">
+        <div class="rj-mini-card">✔️ Assistance avant commande</div>
+        <div class="rj-mini-card">✔️ Confirmation des commandes</div>
+        <div class="rj-mini-card">✔️ Suivi de livraison</div>
+        <div class="rj-mini-card">✔️ Paiement à la livraison</div>
+    </div>
+
+    <!-- IMPORTANT -->
+    <div class="rj-warning" style="margin:24px 0 34px;">
+        <p class="rj-label">Important</p>
+        <p style="margin:0; color:#555;">
+            Pour toute demande liée à une commande, merci d’indiquer votre nom, votre numéro de téléphone,
+            votre wilaya et, si possible, le produit commandé. Cela nous permet de vous répondre plus rapidement.
+        </p>
+    </div>
+
+    <!-- CONTACT RAPIDE -->
+    <div class="rj-card" style="text-align:center; margin:34px 0;">
+        <p class="rj-label">Contact rapide</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Besoin d’une réponse rapide ?
+        </h2>
+
+        <p style="max-width:720px; margin:0 auto 20px; color:#555;">
+            Pour une confirmation de commande, une question sur la livraison ou un produit,
+            WhatsApp reste le moyen le plus rapide pour nous contacter.
+        </p>
+
+        <a href="https://wa.me/213559802840" class="rj-btn">
+            Nous écrire sur WhatsApp
+        </a>
+
+        <a href="mailto:companyrachelle@gmail.com" class="rj-btn-light">
+            Envoyer un e-mail
+        </a>
+    </div>
+
+    <!-- SECTION CONTACT -->
+    <div class="rj-contact-box">
+        <span class="rj-step-number">1</span>
+
+        <h2>Envoyer un message</h2>
+
+        <p style="margin-bottom:16px;">
+            Choisissez le moyen de contact le plus adapté à votre demande. Pour les commandes COD,
+            privilégiez WhatsApp afin de faciliter la confirmation et le suivi.
+        </p>
+
+        <div class="rj-contact-method">
+            <div class="rj-method-card">
+                <h3>WhatsApp</h3>
+                <p>Idéal pour confirmation, suivi de commande, livraison et questions rapides.</p>
+                <a href="https://wa.me/213559802840" class="rj-btn">
+                    Ouvrir WhatsApp
+                </a>
+            </div>
+
+            <div class="rj-method-card">
+                <h3>E-mail</h3>
+                <p>Idéal pour une demande détaillée, retour, échange ou question administrative.</p>
+                <a href="mailto:companyrachelle@gmail.com" class="rj-btn-light">
+                    Envoyer un e-mail
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFOS À FOURNIR -->
+    <div class="rj-contact-box">
+        <span class="rj-step-number">2</span>
+
+        <h2>Pour un suivi plus rapide</h2>
+
+        <p style="margin-bottom:12px;">
+            Si votre demande concerne une commande, merci d’ajouter ces informations dans votre message :
+        </p>
+
+        <ul class="rj-info-list">
+            <li>Nom et prénom utilisés lors de la commande</li>
+            <li>Numéro de téléphone utilisé pour la commande</li>
+            <li>Wilaya et commune de livraison</li>
+            <li>Produit commandé</li>
+            <li>Capture d’écran ou détail utile si nécessaire</li>
+        </ul>
+    </div>
+
+    <!-- DÉLAIS -->
+    <div class="rj-contact-box">
+        <span class="rj-step-number">3</span>
+
+        <h2>Délais de réponse</h2>
+
+        <p>
+            Nous faisons de notre mieux pour répondre aux messages dans les meilleurs délais.
+            Les demandes liées aux commandes confirmées, livraisons et échanges sont traitées en priorité.
+        </p>
+    </div>
+
+    <!-- LIENS UTILES -->
+    <div class="rj-card" style="text-align:center; margin:34px 0;">
+        <p class="rj-label">Liens utiles</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Avant de nous contacter
+        </h2>
+
+        <p style="max-width:720px; margin:0 auto 20px; color:#555;">
+            Vous pouvez aussi consulter nos pages d’informations pour trouver une réponse rapidement.
+        </p>
+
+        <a href="/pages/politique-d-expedition" class="rj-btn-light">
+            Politique d’expédition
+        </a>
+
+        <a href="/pages/politique-de-retour-echange-remboursement" class="rj-btn-light">
+            Retour &amp; remboursement
+        </a>
+
+        <a href="/collections/montre-ieke-algerie" class="rj-btn">
+            Voir nos montres IEKE
+        </a>
+    </div>
+
+</div>

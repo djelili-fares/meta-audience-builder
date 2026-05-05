@@ -1,0 +1,327 @@
+<style>
+    .rj-page * {
+        box-sizing: border-box;
+    }
+
+    .rj-card {
+        background: linear-gradient(135deg, #fffaf5 0%, #f8efe6 100%);
+        border: 1px solid #ead7c5;
+        border-radius: 24px;
+        padding: 26px;
+        box-shadow: 0 14px 34px rgba(92, 62, 38, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .rj-card:before {
+        content: "";
+        position: absolute;
+        top: -40%;
+        left: -60%;
+        width: 45%;
+        height: 180%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+        transform: rotate(25deg);
+        transition: left .8s ease;
+    }
+
+    .rj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 45px rgba(92, 62, 38, 0.14);
+        border-color: #d8b894;
+    }
+
+    .rj-card:hover:before {
+        left: 120%;
+    }
+
+    .rj-mini-card {
+        background: rgba(255, 255, 255, .78);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .rj-mini-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 34px rgba(92, 62, 38, 0.12);
+    }
+
+    .rj-label {
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #b8895b;
+        font-size: 12px;
+        margin: 0 0 6px;
+        font-weight: 700;
+    }
+
+    .rj-btn {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff !important;
+        padding: 12px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+    .rj-btn:hover {
+        transform: translateY(-2px);
+        background: #85563A;
+        box-shadow: 0 14px 28px rgba(156, 104, 70, .28);
+    }
+
+    .rj-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .rj-list {
+        padding-left: 22px;
+        margin-bottom: 0;
+        color: #333;
+    }
+
+    .rj-list li {
+        margin-bottom: 8px;
+    }
+
+    .rj-step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        background: #9C6846;
+        color: #fff;
+        border-radius: 999px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+    }
+
+    .rj-warning {
+        background: #fffaf5;
+        border: 1px solid #ead7c5;
+        border-left: 5px solid #9C6846;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+    }
+
+    .rj-policy-item {
+        background: rgba(255,255,255,.72);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 22px;
+        margin-bottom: 18px;
+        box-shadow: 0 10px 26px rgba(92, 62, 38, 0.06);
+    }
+
+    .rj-policy-item h2 {
+        font-size: 23px;
+        line-height: 1.35;
+        margin: 0 0 10px;
+        color: #111;
+    }
+
+    .rj-policy-item p {
+        margin: 0;
+        color: #555;
+    }
+
+    .rj-data-badge {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 999px;
+        font-weight: 700;
+        margin-top: 10px;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .20);
+    }
+
+    .rj-email-box {
+        display: inline-block;
+        background: #fff;
+        border: 1px solid #ead7c5;
+        color: #9C6846;
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.08);
+        margin-top: 10px;
+    }
+
+    .rj-link {
+        color: #9C6846;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .rj-link:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+        .rj-page {
+            font-size: 15px !important;
+        }
+
+        .rj-grid-2 {
+            grid-template-columns: 1fr !important;
+        }
+
+        .rj-card,
+        .rj-policy-item {
+            padding: 22px;
+            border-radius: 22px;
+        }
+
+        .rj-email-box {
+            width: 100%;
+            text-align: center;
+            border-radius: 18px;
+        }
+    }
+</style>
+
+<div class="rj-page" style="max-width: 980px; margin: 0 auto; line-height: 1.8; font-size: 16px; color: #222; font-family: inherit;">
+
+    <!-- INTRO PREMIUM -->
+    <div class="rj-card" style="padding:36px 24px; margin-bottom:32px; text-align:center;">
+        <p class="rj-label">Rachelle Jewellery</p>
+
+        <h1 style="font-size:32px; line-height:1.3; margin:0 0 14px; color:#111;">
+            Demande de suppression de données personnelles
+        </h1>
+
+        <p style="max-width:760px; margin:0 auto; color:#555;">
+            Conformément aux lois en vigueur sur la protection des données, vous pouvez demander
+            la suppression de vos données personnelles collectées via notre boutique en ligne.
+        </p>
+
+        <span class="rj-data-badge">
+            Protection des données personnelles
+        </span>
+    </div>
+
+    <!-- MINI CARTES -->
+    <div class="rj-grid-2" style="margin:24px 0 34px;">
+        <div class="rj-mini-card">✔️ Demande possible à tout moment</div>
+        <div class="rj-mini-card">✔️ Traitement dans un délai raisonnable</div>
+        <div class="rj-mini-card">✔️ Informations vérifiées avant suppression</div>
+        <div class="rj-mini-card">✔️ Respect de la confidentialité</div>
+    </div>
+
+    <!-- À RETENIR -->
+    <div class="rj-warning" style="margin:24px 0 34px;">
+        <p class="rj-label">À retenir</p>
+        <p style="margin:0; color:#555;">
+            Pour protéger vos informations, nous pouvons avoir besoin de vérifier votre identité
+            ou les informations liées à votre commande avant de traiter une demande de suppression.
+        </p>
+    </div>
+
+    <!-- 1 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">1</span>
+
+        <h2>Votre droit de suppression</h2>
+
+        <p>
+            Vous pouvez demander la suppression de vos données personnelles collectées via notre boutique,
+            notamment les informations liées à vos commandes, vos coordonnées ou vos échanges avec notre service client,
+            dans la limite des obligations légales applicables.
+        </p>
+    </div>
+
+    <!-- 2 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">2</span>
+
+        <h2>Comment faire la demande ?</h2>
+
+        <p>
+            Pour effectuer une demande de suppression de données personnelles, merci de nous contacter via notre
+            formulaire de contact ou directement par e-mail à l’adresse suivante :
+        </p>
+
+        <p style="margin-top:14px;">
+            <a href="mailto:companyrachelle@gmail.com" class="rj-email-box">
+                companyrachelle@gmail.com
+            </a>
+        </p>
+    </div>
+
+    <!-- 3 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">3</span>
+
+        <h2>Informations à inclure dans votre demande</h2>
+
+        <p style="margin-bottom:12px;">
+            Afin de nous aider à identifier correctement votre demande, veuillez inclure les informations suivantes :
+        </p>
+
+        <ul class="rj-list">
+            <li>Prénom et nom</li>
+            <li>Adresse e-mail utilisée pour vos commandes</li>
+            <li>Numéro de téléphone utilisé lors de la commande</li>
+            <li>Numéro de commande, si disponible</li>
+        </ul>
+    </div>
+
+    <!-- 4 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">4</span>
+
+        <h2>Délai de traitement</h2>
+
+        <p>
+            Nous traiterons votre demande dans un délai raisonnable, conformément à notre politique de confidentialité
+            et aux obligations applicables. Certaines informations peuvent être conservées lorsque cela est nécessaire
+            pour respecter une obligation légale, administrative ou liée à la gestion des commandes.
+        </p>
+    </div>
+
+    <!-- 5 -->
+    <div class="rj-policy-item">
+        <span class="rj-step-number">5</span>
+
+        <h2>Politique de confidentialité</h2>
+
+        <p>
+            Pour en savoir plus sur la manière dont nous collectons, utilisons et protégeons vos données personnelles,
+            vous pouvez consulter notre
+            <a href="/policies/privacy-policy" class="rj-link">Politique de confidentialité</a>.
+        </p>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="rj-card" style="text-align:center; margin:34px 0;">
+        <p class="rj-label">Besoin d’aide ?</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Contacter Rachelle Jewellery
+        </h2>
+
+        <p style="max-width:720px; margin:0 auto 20px; color:#555;">
+            Pour toute question concernant vos données personnelles ou une demande de suppression,
+            vous pouvez nous écrire directement par e-mail ou passer par la page de contact.
+        </p>
+
+        <a href="mailto:companyrachelle@gmail.com" class="rj-btn">
+            Envoyer une demande
+        </a>
+    </div>
+
+</div>

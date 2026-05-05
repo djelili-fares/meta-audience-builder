@@ -1,0 +1,358 @@
+<style>
+    .rj-page * {
+        box-sizing: border-box;
+    }
+
+    .rj-card {
+        background: linear-gradient(135deg, #fffaf5 0%, #f8efe6 100%);
+        border: 1px solid #ead7c5;
+        border-radius: 24px;
+        padding: 26px;
+        box-shadow: 0 14px 34px rgba(92, 62, 38, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .rj-card:before {
+        content: "";
+        position: absolute;
+        top: -40%;
+        left: -60%;
+        width: 45%;
+        height: 180%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+        transform: rotate(25deg);
+        transition: left .8s ease;
+    }
+
+    .rj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 45px rgba(92, 62, 38, 0.14);
+        border-color: #d8b894;
+    }
+
+    .rj-card:hover:before {
+        left: 120%;
+    }
+
+    .rj-mini-card {
+        background: rgba(255, 255, 255, .78);
+        border: 1px solid #ead7c5;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 10px 24px rgba(92, 62, 38, 0.06);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .rj-mini-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 34px rgba(92, 62, 38, 0.12);
+    }
+
+    .rj-label {
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #b8895b;
+        font-size: 12px;
+        margin: 0 0 6px;
+        font-weight: 700;
+    }
+
+    .rj-btn {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff !important;
+        padding: 12px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .22);
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+    .rj-btn:hover {
+        transform: translateY(-2px);
+        background: #85563A;
+        box-shadow: 0 14px 28px rgba(156, 104, 70, .28);
+    }
+
+    .rj-highlight-price {
+        font-size: 34px;
+        line-height: 1.2;
+        font-weight: 800;
+        color: #111;
+        margin: 8px 0;
+    }
+
+    .rj-price-range {
+        display: inline-block;
+        background: #9C6846;
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 999px;
+        font-weight: 700;
+        margin-top: 10px;
+        box-shadow: 0 10px 22px rgba(156, 104, 70, .20);
+    }
+
+    .rj-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .rj-list {
+        padding-left: 22px;
+        margin-bottom: 0;
+        color: #333;
+    }
+
+    .rj-list li {
+        margin-bottom: 8px;
+    }
+
+    .rj-faq-item {
+        background: rgba(255,255,255,.72);
+        border: 1px solid #ead7c5;
+        border-radius: 18px;
+        padding: 18px;
+        margin-bottom: 14px;
+        box-shadow: 0 8px 22px rgba(92, 62, 38, 0.05);
+    }
+
+    .rj-faq-item h3 {
+        font-size: 19px;
+        margin: 0 0 8px;
+        color: #111;
+    }
+
+    .rj-faq-item p {
+        margin: 0;
+        color: #555;
+    }
+
+    .rj-link {
+        color: #9C6846;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .rj-link:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+        .rj-page {
+            font-size: 15px !important;
+        }
+
+        .rj-grid-2 {
+            grid-template-columns: 1fr !important;
+        }
+
+        .rj-card {
+            padding: 22px;
+            border-radius: 22px;
+        }
+
+        .rj-highlight-price {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<div class="rj-page" style="max-width: 980px; margin: 0 auto; line-height: 1.8; font-size: 16px; color: #222; font-family: inherit;">
+
+    <!-- INTRO PREMIUM -->
+    <div class="rj-card" style="padding:36px 24px; margin-bottom:32px; text-align:center;">
+        <p class="rj-label">Guide prix IEKE Algérie</p>
+
+        <!-- <h1 style="font-size:32px; line-height:1.3; margin:0 0 14px; color:#111;">
+            Prix des montres IEKE en Algérie : guide complet
+        </h1> -->
+
+        <p style="max-width:740px; margin:0 auto; color:#555;">
+            Les montres IEKE sont de plus en plus populaires en Algérie grâce à leur design élégant,
+            leur style féminin et leur excellent rapport qualité/prix. Voici un guide simple pour comprendre
+            le prix réel d’une montre IEKE et choisir le bon modèle.
+        </p>
+    </div>
+
+    <!-- PRIX MOYEN -->
+    <div class="rj-card" style="text-align:center; margin-bottom:28px;">
+        <p class="rj-label">Prix moyen constaté</p>
+
+        <div class="rj-highlight-price">
+            3500 DA à 6000 DA
+        </div>
+
+        <p style="max-width:680px; margin:0 auto; color:#555;">
+            Le prix d’une montre IEKE en Algérie varie selon le modèle, le design, le type de bracelet
+            et la finition.
+        </p>
+
+        <span class="rj-price-range">
+            Paiement à la livraison disponible
+        </span>
+    </div>
+
+    <!-- MINI CARTES TRUST -->
+    <div class="rj-grid-2" style="margin:24px 0 34px;">
+        <div class="rj-mini-card">✔️ Prix selon le modèle</div>
+        <div class="rj-mini-card">✔️ Bracelet cuir ou acier</div>
+        <div class="rj-mini-card">✔️ Design féminin élégant</div>
+        <div class="rj-mini-card">✔️ Livraison en Algérie</div>
+    </div>
+
+    <!-- POURQUOI LES PRIX VARIENT -->
+    <div class="rj-card" style="margin:32px 0;">
+        <p class="rj-label">Comprendre le prix</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Pourquoi les prix des montres IEKE varient ?
+        </h2>
+
+        <p style="color:#555;">
+            Le prix d’une montre IEKE dépend de plusieurs facteurs. Deux montres peuvent avoir le même nom de marque,
+            mais une finition, un bracelet ou un design différent.
+        </p>
+
+        <ul class="rj-list">
+            <li>Le design du cadran</li>
+            <li>Le type de bracelet : cuir ou acier</li>
+            <li>La qualité de finition</li>
+            <li>La rareté du modèle</li>
+            <li>Le packaging et la présentation</li>
+            <li>Les frais de livraison selon la wilaya</li>
+        </ul>
+    </div>
+
+    <!-- COMPARAISON CUIR ACIER -->
+    <div class="rj-grid-2" style="margin:32px 0;">
+        <div class="rj-card">
+            <p class="rj-label">Bracelet cuir</p>
+
+            <h2 style="font-size:24px; margin:0 0 10px; color:#111;">
+                Montre IEKE bracelet cuir
+            </h2>
+
+            <p style="color:#555;">
+                Les modèles avec bracelet cuir sont appréciés pour leur confort, leur style classique
+                et leur élégance discrète. Ils conviennent très bien à une utilisation quotidienne.
+            </p>
+
+            <p style="margin-bottom:0; color:#333;">
+                Idéal pour : look chic, tenue simple, cadeau féminin.
+            </p>
+        </div>
+
+        <div class="rj-card">
+            <p class="rj-label">Bracelet acier</p>
+
+            <h2 style="font-size:24px; margin:0 0 10px; color:#111;">
+                Montre IEKE bracelet acier
+            </h2>
+
+            <p style="color:#555;">
+                Les modèles avec bracelet acier donnent souvent une impression plus premium et moderne.
+                Certains modèles peuvent être légèrement plus chers selon la finition.
+            </p>
+
+            <p style="margin-bottom:0; color:#333;">
+                Idéal pour : style moderne, cadeau premium, look habillé.
+            </p>
+        </div>
+    </div>
+
+    <!-- ATTENTION PRIX BAS -->
+    <div class="rj-card" style="margin:32px 0;">
+        <p class="rj-label">Conseil avant achat</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Attention aux prix trop bas
+        </h2>
+
+        <p style="color:#555;">
+            Si vous trouvez une montre IEKE à un prix très bas, il faut vérifier la qualité du produit.
+            Un prix trop faible peut parfois indiquer une imitation, une finition faible ou un produit
+            différent des photos affichées.
+        </p>
+
+        <ul class="rj-list">
+            <li>Vérifiez les photos réelles du produit</li>
+            <li>Regardez les avis clientes si disponibles</li>
+            <li>Vérifiez si le paiement à la livraison est proposé</li>
+            <li>Assurez-vous que le vendeur est joignable avant la livraison</li>
+        </ul>
+    </div>
+
+    <!-- CTA COLLECTION -->
+    <div class="rj-card" style="text-align:center; margin:34px 0;">
+        <p class="rj-label">Collection disponible</p>
+
+        <h2 style="font-size:26px; margin:0 0 12px; color:#111;">
+            Voir les montres IEKE disponibles en Algérie
+        </h2>
+
+        <p style="max-width:720px; margin:0 auto 20px; color:#555;">
+            Découvrez notre collection de montres IEKE pour femme avec différents styles :
+            bracelet cuir, bracelet acier et designs élégants adaptés à toutes les occasions.
+        </p>
+
+        <a href="https://rachellejewellery.com/collections/montre-ieke-algerie" class="rj-btn">
+            Voir les modèles disponibles
+        </a>
+    </div>
+
+    <!-- FAQ -->
+    <div style="margin-top:44px;">
+        <p class="rj-label">Questions fréquentes</p>
+
+        <h2 style="font-size:26px; margin:0 0 18px; color:#111;">
+            Questions fréquentes sur les prix des montres IEKE
+        </h2>
+
+        <div class="rj-faq-item">
+            <h3>Quel est le prix moyen d’une montre IEKE en Algérie ?</h3>
+            <p>
+                Le prix moyen se situe généralement entre <strong>3500 DA et 6000 DA</strong>,
+                selon le modèle, le design et le type de bracelet.
+            </p>
+        </div>
+
+        <div class="rj-faq-item">
+            <h3>Pourquoi certaines montres IEKE sont moins chères ?</h3>
+            <p>
+                Cela peut dépendre de la qualité, du fournisseur, de la finition ou du modèle proposé.
+                Il est important de vérifier les détails avant d’acheter.
+            </p>
+        </div>
+
+        <div class="rj-faq-item">
+            <h3>Est-ce que le bracelet acier est plus cher que le bracelet cuir ?</h3>
+            <p>
+                Pas toujours. Les prix restent souvent proches, mais certains modèles acier peuvent être
+                légèrement plus chers selon le design et la finition.
+            </p>
+        </div>
+
+        <div class="rj-faq-item">
+            <h3>Est-ce que le paiement à la livraison est disponible ?</h3>
+            <p>
+                Oui, le paiement à la livraison est proposé afin de faciliter l’achat en toute confiance.
+            </p>
+        </div>
+
+        <div class="rj-faq-item">
+            <h3>Où acheter une montre IEKE en Algérie ?</h3>
+            <p>
+                Vous pouvez consulter notre collection ici :
+                <a href="https://rachellejewellery.com/collections/montre-ieke-algerie" class="rj-link">
+                    montres IEKE femme en Algérie
+                </a>.
+            </p>
+        </div>
+    </div>
+
+</div>
