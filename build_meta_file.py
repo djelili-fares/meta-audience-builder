@@ -58,7 +58,6 @@ DEFAULT_COUNTRY = "DZ"
 MASTER_FILE = "meta_custom_audience_master.csv"
 WILAYA_LOG_FILE = "wilaya_stats_log.txt"
 
-
 # ============================================================
 # OUTILS DE NORMALISATION
 # ============================================================
@@ -216,9 +215,91 @@ def transform_source_type_2(df: pd.DataFrame) -> pd.DataFrame:
 # QUALITE / NETTOYAGE
 # ============================================================
 
-def clean_meta_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+
+def print_duplicate_resolution_report(duplicates_report: list[dict]) -> None:
+    """
+    Affiche dans la console un rapport structuré des doublons téléphone :
+    - variantes trouvées
+    - variante gardée
+    - variantes supprimées
+    - valeur totale cumulée
+    """
+    if not duplicates_report:
+        return
+
+    print(f"\n{Fore.MAGENTA}{'=' * 90}{Style.RESET_ALL}")
+    print(f"{Fore.MAGENTA}DOUBLONS TELEPHONE TRAITES - LOGIQUE VALUE-BASED{Style.RESET_ALL}")
+    print(f"{Fore.MAGENTA}{'=' * 90}{Style.RESET_ALL}")
+
+    total_groups = len(duplicates_report)
+    total_removed = sum(len(item["removed_rows"]) for item in duplicates_report)
+    total_added_value = sum(item["total_value"] for item in duplicates_report)
+
+    print(f"{Fore.WHITE}Nombre de téléphones en doublon : {total_groups}{Style.RESET_ALL}")
+    print(f"{Fore.WHITE}Nombre de variantes supprimées : {total_removed}{Style.RESET_ALL}")
+    print(f"{Fore.WHITE}Valeur totale cumulée concernée : {total_added_value:.2f}{Style.RESET_ALL}")
+    print(f"{Fore.MAGENTA}{'-' * 90}{Style.RESET_ALL}")
+
+    for idx, item in enumerate(duplicates_report, start=1):
+        phone = item["phone"]
+        kept_row = item["kept_row"]
+        removed_rows = item["removed_rows"]
+        total_value = item["total_value"]
+        variants_count = item["variants_count"]
+
+        print(f"\n{Fore.CYAN}[DOUBLON #{idx}]{Style.RESET_ALL} Téléphone : {phone}")
+        print(f"{Fore.WHITE}Nombre de variantes : {variants_count}{Style.RESET_ALL}")
+        print(f"{Fore.WHITE}Valeur cumulée finale : {total_value:.2f}{Style.RESET_ALL}")
+
+        print(f"\n{Fore.GREEN}LIGNE GARDEE :{Style.RESET_ALL}")
+        print(
+            f"  phone={kept_row['phone']} | "
+            f"fn={kept_row['fn']} | "
+            f"ln={kept_row['ln']} | "
+            f"wilaya={kept_row['st']} | "
+            f"commune={kept_row['ct']} | "
+            f"ancienne_value={kept_row['original_value']:.2f} | "
+            f"nouvelle_value={total_value:.2f}"
+        )
+
+        print(f"{Fore.RED}VARIANTES SUPPRIMEES :{Style.RESET_ALL}")
+        for removed in removed_rows:
+            print(
+                f"  - phone={removed['phone']} | "
+                f"fn={removed['fn']} | "
+                f"ln={removed['ln']} | "
+                f"wilaya={removed['st']} | "
+                f"commune={removed['ct']} | "
+                f"value={removed['original_value']:.2f}"
+            )
+
+        print(f"{Fore.MAGENTA}{'-' * 90}{Style.RESET_ALL}")
+
+    print(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Pour Meta Value-Based Audience, la valeur finale représente le total acheté par client unique.")
+    print(f"{Fore.MAGENTA}{'=' * 90}{Style.RESET_ALL}\n")
+
+
+def clean_meta_dataframe(
+    df: pd.DataFrame,
+    show_removed: bool = False,
+    show_duplicates_report: bool = False,
+) -> pd.DataFrame:
     """
     Nettoie le DataFrame final Meta.
+
+    Supprime :
+    - les lignes sans téléphone
+    - les lignes sans prénom et sans nom
+
+    Déduplique par téléphone avec logique business :
+    - garde la variante avec la valeur la plus élevée
+    - supprime les variantes plus faibles
+    - additionne les valeurs de toutes les variantes
+    - met la somme dans la ligne gardée
+
+    Peut afficher dans la console :
+    - les clients supprimés
+    - les doublons traités
     """
     df = df.copy()
     df = df[META_COLUMNS]
@@ -226,12 +307,105 @@ def clean_meta_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     for col in ["phone", "fn", "ln", "ct", "st", "country"]:
         df[col] = df[col].apply(clean_text)
 
-    df = df[df["phone"] != ""]
-    df = df[(df["fn"] != "") | (df["ln"] != "")]
     df["country"] = DEFAULT_COUNTRY
 
-    df = df.drop_duplicates(subset=["phone"], keep="last")
+    # Important pour comparer et additionner correctement les prix
+    df["value"] = pd.to_numeric(df["value"], errors="coerce").fillna(0)
+
+    removed_rows = []
+
+    # 1) Clients sans téléphone
+    no_phone = df[df["phone"] == ""].copy()
+    if not no_phone.empty:
+        no_phone["delete_reason"] = "Téléphone vide ou invalide"
+        removed_rows.append(no_phone)
+
+    df = df[df["phone"] != ""]
+
+    # 2) Clients sans nom exploitable
+    no_name = df[(df["fn"] == "") & (df["ln"] == "")].copy()
+    if not no_name.empty:
+        no_name["delete_reason"] = "Prénom et nom vides"
+        removed_rows.append(no_name)
+
+    df = df[(df["fn"] != "") | (df["ln"] != "")]
+
+    # 3) Déduplication intelligente par téléphone
+    final_rows = []
+    duplicates_report = []
+
+    for phone, group in df.groupby("phone", sort=False):
+        group = group.copy()
+
+        # Cas normal : pas de doublon
+        if len(group) == 1:
+            final_rows.append(group.iloc[0])
+            continue
+
+        # Garder la variante avec la valeur la plus élevée
+        kept_index = group["value"].idxmax()
+        kept_row = group.loc[kept_index].copy()
+
+        # Additionner toutes les valeurs de ce téléphone
+        total_value = group["value"].sum()
+
+        # Toutes les autres variantes sont supprimées
+        removed_group = group.drop(index=kept_index).copy()
+        removed_group["delete_reason"] = "Doublon téléphone supprimé - valeur plus basse"
+        removed_rows.append(removed_group)
+
+        # Préparer le rapport console
+        kept_report = kept_row.copy()
+        kept_report["original_value"] = kept_row["value"]
+
+        removed_report_rows = []
+        for _, removed_row in removed_group.iterrows():
+            removed_report = removed_row.copy()
+            removed_report["original_value"] = removed_row["value"]
+            removed_report_rows.append(removed_report)
+
+        duplicates_report.append(
+            {
+                "phone": phone,
+                "variants_count": len(group),
+                "kept_row": kept_report,
+                "removed_rows": removed_report_rows,
+                "total_value": total_value,
+            }
+        )
+
+        # La ligne gardée reçoit la valeur cumulée finale
+        kept_row["value"] = total_value
+        final_rows.append(kept_row)
+
+    if final_rows:
+        df = pd.DataFrame(final_rows)
+    else:
+        df = pd.DataFrame(columns=META_COLUMNS)
+
+    df = df[META_COLUMNS]
     df = df.reset_index(drop=True)
+
+    # Affichage console des lignes supprimées
+    if show_removed:
+        if removed_rows:
+            removed_df = pd.concat(removed_rows, ignore_index=True)
+
+            print(f"\n{Fore.RED}{'=' * 90}{Style.RESET_ALL}")
+            print(f"{Fore.RED}CLIENTS / VARIANTES SUPPRIMES{Style.RESET_ALL}")
+            print(f"{Fore.RED}{'=' * 90}{Style.RESET_ALL}")
+
+            display_cols = ["phone", "fn", "ln", "ct", "st", "value", "delete_reason"]
+            print(removed_df[display_cols].to_string(index=False))
+
+            print(f"{Fore.RED}{'-' * 90}{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Total lignes supprimées : {len(removed_df)}\n")
+        else:
+            print(f"{Fore.GREEN}[OK]{Style.RESET_ALL} Aucun client supprimé pendant le nettoyage.")
+
+    # Affichage console du rapport détaillé des doublons
+    if show_duplicates_report:
+        print_duplicate_resolution_report(duplicates_report)
 
     return df
 
@@ -293,7 +467,11 @@ def import_source_file(
     else:
         raise ValueError("source_type doit être 1 ou 2")
 
-    cleaned = clean_meta_dataframe(transformed)
+    cleaned = clean_meta_dataframe(
+        transformed,
+        show_removed=True,
+        show_duplicates_report=True,
+    )
     return cleaned
 
 
@@ -303,11 +481,21 @@ def merge_into_master(
 ) -> pd.DataFrame:
     """
     Fusionne les nouvelles données avec le fichier principal.
+
+    Si un téléphone existe déjà dans le master :
+    - on garde la variante avec la valeur la plus élevée
+    - on additionne les valeurs master + nouvel import
+    - on affiche un rapport structuré des doublons traités
     """
     master_df = load_master_file(master_file)
 
     combined = pd.concat([master_df, imported_df], ignore_index=True)
-    combined = clean_meta_dataframe(combined)
+
+    combined = clean_meta_dataframe(
+        combined,
+        show_removed=False,
+        show_duplicates_report=True,
+    )
 
     save_master_file(combined, master_file)
     return combined
@@ -441,7 +629,7 @@ def main() -> None:
     wilaya_log_file = WILAYA_LOG_FILE
 
     # Ton fichier source livré
-    source_file_1 = "clients_livres_rachelle_jusqua_16Avr2026.xlsx"
+    source_file_1 = "288_colis_livrés_all_05Mai2026.xlsx"
     # source_file_2 = "clients_source_type_2.xlsx"
 
     initialize_master_file(master_file)

@@ -1,57 +1,57 @@
 ========================================================================
 REPARTITION DES CLIENTS LIVRES PAR WILAYA
 ========================================================================
-Total clients uniques retenus dans le master : 252
+Total clients uniques retenus dans le master : 284
 
 RANG  WILAYA                   NB CLIENTS     % TOTAL   
 ------------------------------------------------------------------------
-1     Alger                    65             25.79     
-2     Constantine              15             5.95      
-3     Batna                    12             4.76      
-4     Boumerdès                10             3.97      
-5     Oran                     10             3.97      
-6     Tizi Ouzou               9              3.57      
-7     Skikda                   8              3.17      
-8     Sidi Bel Abbès           8              3.17      
-9     Annaba                   7              2.78      
-10    Tipaza                   7              2.78      
-11    Khenchela                6              2.38      
-12    Blida                    6              2.38      
-13    Mostaganem               6              2.38      
-14    Béjaïa                   6              2.38      
-15    Sétif                    5              1.98      
-16    M'Sila                   4              1.59      
-17    Laghouat                 4              1.59      
-18    Relizane                 4              1.59      
-19    Guelma                   4              1.59      
-20    Jijel                    4              1.59      
-21    Mila                     4              1.59      
-22    Chlef                    4              1.59      
-23    Adrar                    3              1.19      
-24    Tiaret                   3              1.19      
-25    Tlemcen                  3              1.19      
-26    El Oued                  3              1.19      
-27    Oum El Bouaghi           3              1.19      
-28    Biskra                   2              0.79      
-29    Aïn Témouchent           2              0.79      
-30    Bordj Bou Arreridj       2              0.79      
-31    Bouira                   2              0.79      
-32    Mascara                  2              0.79      
-33    El M'Ghair               2              0.79      
-34    Saïda                    2              0.79      
-35    Tébessa                  2              0.79      
-36    Tindouf                  2              0.79      
-37    Ain Defla                1              0.40      
-38    Djelfa                   1              0.40      
-39    El Menia                 1              0.40      
-40    Naâma                    1              0.40      
-41    Médéa                    1              0.40      
-42    El Meniaa                1              0.40      
-43    El Tarf                  1              0.40      
-44    Tamanrasset              1              0.40      
-45    Ouargla                  1              0.40      
-46    Tissemsilt               1              0.40      
-47    Touggourt                1              0.40      
+1     Alger                    73             25.70     
+2     Constantine              17             5.99      
+3     Oran                     15             5.28      
+4     Batna                    12             4.23      
+5     Tizi Ouzou               10             3.52      
+6     Boumerdès                9              3.17      
+7     Sidi Bel Abbès           9              3.17      
+8     Sétif                    8              2.82      
+9     Annaba                   8              2.82      
+10    Skikda                   8              2.82      
+11    Mostaganem               7              2.46      
+12    Béjaïa                   7              2.46      
+13    Tipaza                   7              2.46      
+14    Khenchela                6              2.11      
+15    Blida                    6              2.11      
+16    Tiaret                   5              1.76      
+17    Jijel                    5              1.76      
+18    Mila                     4              1.41      
+19    Tlemcen                  4              1.41      
+20    M'Sila                   4              1.41      
+21    Laghouat                 4              1.41      
+22    El Oued                  4              1.41      
+23    Chlef                    4              1.41      
+24    Relizane                 4              1.41      
+25    Guelma                   4              1.41      
+26    Saïda                    3              1.06      
+27    Tébessa                  3              1.06      
+28    Mascara                  3              1.06      
+29    Adrar                    3              1.06      
+30    Bouira                   3              1.06      
+31    Oum El Bouaghi           3              1.06      
+32    Aïn Témouchent           2              0.70      
+33    El Tarf                  2              0.70      
+34    Biskra                   2              0.70      
+35    Bordj Bou Arreridj       2              0.70      
+36    El M'Ghair               2              0.70      
+37    Tindouf                  2              0.70      
+38    Djelfa                   1              0.35      
+39    Aïn Defla                1              0.35      
+40    Naâma                    1              0.35      
+41    Médéa                    1              0.35      
+42    El Meniaa                1              0.35      
+43    El Menia                 1              0.35      
+44    Tamanrasset              1              0.35      
+45    Ouargla                  1              0.35      
+46    Tissemsilt               1              0.35      
+47    Touggourt                1              0.35      
 ------------------------------------------------------------------------
 Lecture business :
 - Les wilayas en haut du classement sont les plus représentées dans ta base clients livrés.
