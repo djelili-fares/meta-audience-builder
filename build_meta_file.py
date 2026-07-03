@@ -2,15 +2,23 @@
 Construction et mise à jour d'un fichier client principal conforme Meta Ads
 pour Custom Audience / Value-Based Audience.
 
+Utilisation :
+    python build_meta_file.py fichier1.xlsx fichier2.xlsx fichier3.xlsx fichier4.xlsx
+
+Exemple :
+    python build_meta_file.py Anderson_03-07-2026.xlsx guepex_03-07-2026.xlsx Univer_03-07-2026.xlsx Zimou_03-07-2026.xlsx --master rachelle_clients_03-07-2026.csv --reset-master
+
 Fonctionnalités :
-- Crée un fichier principal Meta s'il n'existe pas
-- Lit plusieurs fichiers sources Excel / CSV
-- Gère plusieurs structures de colonnes
-- Normalise les noms, wilayas, communes, valeurs
+- Accepte de 1 à 4 fichiers sources en arguments
+- Lit des fichiers Excel / CSV
+- Détecte automatiquement la structure des colonnes
+- Accepte "Prix" ou "Montant" comme colonne de valeur
+- Normalise les noms, wilayas, communes et valeurs
 - Formate les numéros algériens au format international attendu par Meta
 - Déduplique les clients sur la base du téléphone
-- Sauvegarde un fichier principal enrichi au fur et à mesure
-- Génère des statistiques par wilaya (nombre + pourcentage)
+- Additionne les valeurs d'achat par client unique
+- Sauvegarde un fichier principal compatible Meta
+- Génère des statistiques par wilaya
 - Sauvegarde un fichier log dédié des wilayas
 
 Auteur : ChatGPT
@@ -19,22 +27,23 @@ Contexte : Shopify / COD / Algérie / Meta Ads
 
 from __future__ import annotations
 
+import argparse
 import re
 from pathlib import Path
 from typing import Optional, Tuple
 
 import pandas as pd
 
+
 # ============================================================
-# COLORAMA (optionnel)
+# COLORAMA OPTIONNEL
 # ============================================================
 
 try:
     from colorama import Fore, Style, init
+
     init(autoreset=True)
-    COLOR_ENABLED = True
 except ImportError:
-    COLOR_ENABLED = False
 
     class DummyColor:
         RED = ""
@@ -58,26 +67,25 @@ DEFAULT_COUNTRY = "DZ"
 MASTER_FILE = "meta_custom_audience_master.csv"
 WILAYA_LOG_FILE = "wilaya_stats_log.txt"
 
+
 # ============================================================
 # OUTILS DE NORMALISATION
 # ============================================================
 
 def clean_text(value: object) -> str:
-    """
-    Nettoie une valeur texte.
-    """
+    """Nettoie une valeur texte."""
     if pd.isna(value):
         return ""
+
     text = str(value).strip()
     text = re.sub(r"\s+", " ", text)
     return text
 
 
 def normalize_phone_dz(phone: object) -> str:
-    """
-    Normalise un numéro algérien au format international Meta.
-    """
+    """Normalise un numéro algérien au format international Meta."""
     raw = clean_text(phone)
+
     if not raw:
         return ""
 
@@ -102,9 +110,7 @@ def normalize_phone_dz(phone: object) -> str:
 
 
 def normalize_value(value: object) -> Optional[float]:
-    """
-    Normalise la valeur de commande.
-    """
+    """Normalise la valeur de commande."""
     if pd.isna(value):
         return None
 
@@ -121,16 +127,16 @@ def normalize_value(value: object) -> Optional[float]:
 
 
 def split_client_name(full_name: object) -> Tuple[str, str]:
-    """
-    Sépare un champ 'Client' en prénom et nom.
-    """
+    """Sépare un champ Client en prénom et nom."""
     text = clean_text(full_name)
+
     if not text:
         return "", ""
 
     parts = text.split(" ")
     first_name = parts[0]
     last_name = " ".join(parts[1:]) if len(parts) > 1 else ""
+
     return first_name, last_name
 
 
@@ -139,9 +145,7 @@ def split_client_name(full_name: object) -> Tuple[str, str]:
 # ============================================================
 
 def read_table(file_path: str | Path) -> pd.DataFrame:
-    """
-    Lit un fichier Excel ou CSV en DataFrame.
-    """
+    """Lit un fichier Excel ou CSV en DataFrame."""
     file_path = Path(file_path)
 
     if not file_path.exists():
@@ -161,6 +165,23 @@ def read_table(file_path: str | Path) -> pd.DataFrame:
     raise ValueError(f"Format non supporté : {suffix}")
 
 
+def find_first_existing_column(df: pd.DataFrame, candidates: list[str]) -> str:
+    """
+    Retourne la première colonne trouvée dans le DataFrame.
+
+    Exemple :
+    candidates = ["Prix", "Montant"]
+    """
+    for column in candidates:
+        if column in df.columns:
+            return column
+
+    raise ValueError(
+        f"Aucune colonne trouvée parmi : {candidates}. "
+        f"Colonnes disponibles : {list(df.columns)}"
+    )
+
+
 # ============================================================
 # TRANSFORMATIONS PAR TYPE DE FICHIER SOURCE
 # ============================================================
@@ -168,12 +189,15 @@ def read_table(file_path: str | Path) -> pd.DataFrame:
 def transform_source_type_1(df: pd.DataFrame) -> pd.DataFrame:
     """
     Type 1 :
-    Prénom | Nom | Téléphone | Wilaya | Commune | Prix
+    Prénom | Nom | Téléphone | Wilaya | Commune | Prix/Montant
     """
-    required_columns = ["Prénom", "Nom", "Téléphone", "Wilaya", "Commune", "Prix"]
+    required_columns = ["Prénom", "Nom", "Téléphone", "Wilaya", "Commune"]
     missing = [col for col in required_columns if col not in df.columns]
+
     if missing:
         raise ValueError(f"Colonnes manquantes pour le fichier type 1 : {missing}")
+
+    value_column = find_first_existing_column(df, ["Prix", "Montant"])
 
     out = pd.DataFrame()
     out["phone"] = df["Téléphone"].apply(normalize_phone_dz)
@@ -182,7 +206,7 @@ def transform_source_type_1(df: pd.DataFrame) -> pd.DataFrame:
     out["ct"] = df["Commune"].apply(clean_text)
     out["st"] = df["Wilaya"].apply(clean_text)
     out["country"] = DEFAULT_COUNTRY
-    out["value"] = df["Prix"].apply(normalize_value)
+    out["value"] = df[value_column].apply(normalize_value)
 
     return out
 
@@ -190,13 +214,15 @@ def transform_source_type_1(df: pd.DataFrame) -> pd.DataFrame:
 def transform_source_type_2(df: pd.DataFrame) -> pd.DataFrame:
     """
     Type 2 :
-    Client | Téléphone | Wilaya | Commune | Prix
+    Client | Téléphone | Wilaya | Commune | Prix/Montant
     """
-    required_columns = ["Client", "Téléphone", "Wilaya", "Commune", "Prix"]
+    required_columns = ["Client", "Téléphone", "Wilaya", "Commune"]
     missing = [col for col in required_columns if col not in df.columns]
+
     if missing:
         raise ValueError(f"Colonnes manquantes pour le fichier type 2 : {missing}")
 
+    value_column = find_first_existing_column(df, ["Prix", "Montant"])
     names = df["Client"].apply(split_client_name)
 
     out = pd.DataFrame()
@@ -206,7 +232,41 @@ def transform_source_type_2(df: pd.DataFrame) -> pd.DataFrame:
     out["ct"] = df["Commune"].apply(clean_text)
     out["st"] = df["Wilaya"].apply(clean_text)
     out["country"] = DEFAULT_COUNTRY
-    out["value"] = df["Prix"].apply(normalize_value)
+    out["value"] = df[value_column].apply(normalize_value)
+
+    return out
+
+
+def transform_source_type_3(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Type 3 - Guepex :
+    prénom | nom | téléphone | commune | wilaya destination | prix
+
+    Ce format est utilisé par les exports Guepex.
+    Les noms de colonnes sont en minuscules.
+    """
+    required_columns = [
+        "prénom",
+        "nom",
+        "téléphone",
+        "commune",
+        "wilaya destination",
+        "prix",
+    ]
+
+    missing = [col for col in required_columns if col not in df.columns]
+
+    if missing:
+        raise ValueError(f"Colonnes manquantes pour le fichier type 3 : {missing}")
+
+    out = pd.DataFrame()
+    out["phone"] = df["téléphone"].apply(normalize_phone_dz)
+    out["fn"] = df["prénom"].apply(clean_text)
+    out["ln"] = df["nom"].apply(clean_text)
+    out["ct"] = df["commune"].apply(clean_text)
+    out["st"] = df["wilaya destination"].apply(clean_text)
+    out["country"] = DEFAULT_COUNTRY
+    out["value"] = df["prix"].apply(normalize_value)
 
     return out
 
@@ -215,15 +275,8 @@ def transform_source_type_2(df: pd.DataFrame) -> pd.DataFrame:
 # QUALITE / NETTOYAGE
 # ============================================================
 
-
 def print_duplicate_resolution_report(duplicates_report: list[dict]) -> None:
-    """
-    Affiche dans la console un rapport structuré des doublons téléphone :
-    - variantes trouvées
-    - variante gardée
-    - variantes supprimées
-    - valeur totale cumulée
-    """
+    """Affiche un rapport détaillé des doublons téléphone."""
     if not duplicates_report:
         return
 
@@ -263,6 +316,7 @@ def print_duplicate_resolution_report(duplicates_report: list[dict]) -> None:
         )
 
         print(f"{Fore.RED}VARIANTES SUPPRIMEES :{Style.RESET_ALL}")
+
         for removed in removed_rows:
             print(
                 f"  - phone={removed['phone']} | "
@@ -275,7 +329,10 @@ def print_duplicate_resolution_report(duplicates_report: list[dict]) -> None:
 
         print(f"{Fore.MAGENTA}{'-' * 90}{Style.RESET_ALL}")
 
-    print(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Pour Meta Value-Based Audience, la valeur finale représente le total acheté par client unique.")
+    print(
+        f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} "
+        "Pour Meta Value-Based Audience, la valeur finale représente le total acheté par client unique."
+    )
     print(f"{Fore.MAGENTA}{'=' * 90}{Style.RESET_ALL}\n")
 
 
@@ -287,19 +344,12 @@ def clean_meta_dataframe(
     """
     Nettoie le DataFrame final Meta.
 
-    Supprime :
-    - les lignes sans téléphone
-    - les lignes sans prénom et sans nom
-
-    Déduplique par téléphone avec logique business :
+    Règles :
+    - supprime les lignes sans téléphone
+    - supprime les lignes sans prénom et sans nom
+    - déduplique par téléphone
     - garde la variante avec la valeur la plus élevée
-    - supprime les variantes plus faibles
-    - additionne les valeurs de toutes les variantes
-    - met la somme dans la ligne gardée
-
-    Peut afficher dans la console :
-    - les clients supprimés
-    - les doublons traités
+    - additionne toutes les valeurs du même téléphone
     """
     df = df.copy()
     df = df[META_COLUMNS]
@@ -308,13 +358,10 @@ def clean_meta_dataframe(
         df[col] = df[col].apply(clean_text)
 
     df["country"] = DEFAULT_COUNTRY
-
-    # Important pour comparer et additionner correctement les prix
     df["value"] = pd.to_numeric(df["value"], errors="coerce").fillna(0)
 
     removed_rows = []
 
-    # 1) Clients sans téléphone
     no_phone = df[df["phone"] == ""].copy()
     if not no_phone.empty:
         no_phone["delete_reason"] = "Téléphone vide ou invalide"
@@ -322,7 +369,6 @@ def clean_meta_dataframe(
 
     df = df[df["phone"] != ""]
 
-    # 2) Clients sans nom exploitable
     no_name = df[(df["fn"] == "") & (df["ln"] == "")].copy()
     if not no_name.empty:
         no_name["delete_reason"] = "Prénom et nom vides"
@@ -330,35 +376,29 @@ def clean_meta_dataframe(
 
     df = df[(df["fn"] != "") | (df["ln"] != "")]
 
-    # 3) Déduplication intelligente par téléphone
     final_rows = []
     duplicates_report = []
 
     for phone, group in df.groupby("phone", sort=False):
         group = group.copy()
 
-        # Cas normal : pas de doublon
         if len(group) == 1:
             final_rows.append(group.iloc[0])
             continue
 
-        # Garder la variante avec la valeur la plus élevée
         kept_index = group["value"].idxmax()
         kept_row = group.loc[kept_index].copy()
-
-        # Additionner toutes les valeurs de ce téléphone
         total_value = group["value"].sum()
 
-        # Toutes les autres variantes sont supprimées
         removed_group = group.drop(index=kept_index).copy()
         removed_group["delete_reason"] = "Doublon téléphone supprimé - valeur plus basse"
         removed_rows.append(removed_group)
 
-        # Préparer le rapport console
         kept_report = kept_row.copy()
         kept_report["original_value"] = kept_row["value"]
 
         removed_report_rows = []
+
         for _, removed_row in removed_group.iterrows():
             removed_report = removed_row.copy()
             removed_report["original_value"] = removed_row["value"]
@@ -374,7 +414,6 @@ def clean_meta_dataframe(
             }
         )
 
-        # La ligne gardée reçoit la valeur cumulée finale
         kept_row["value"] = total_value
         final_rows.append(kept_row)
 
@@ -383,10 +422,8 @@ def clean_meta_dataframe(
     else:
         df = pd.DataFrame(columns=META_COLUMNS)
 
-    df = df[META_COLUMNS]
-    df = df.reset_index(drop=True)
+    df = df[META_COLUMNS].reset_index(drop=True)
 
-    # Affichage console des lignes supprimées
     if show_removed:
         if removed_rows:
             removed_df = pd.concat(removed_rows, ignore_index=True)
@@ -403,7 +440,6 @@ def clean_meta_dataframe(
         else:
             print(f"{Fore.GREEN}[OK]{Style.RESET_ALL} Aucun client supprimé pendant le nettoyage.")
 
-    # Affichage console du rapport détaillé des doublons
     if show_duplicates_report:
         print_duplicate_resolution_report(duplicates_report)
 
@@ -415,10 +451,9 @@ def clean_meta_dataframe(
 # ============================================================
 
 def initialize_master_file(master_file: str | Path) -> None:
-    """
-    Crée le fichier principal s'il n'existe pas encore.
-    """
+    """Crée le fichier principal s'il n'existe pas encore."""
     master_path = Path(master_file)
+
     if not master_path.exists():
         empty_df = pd.DataFrame(columns=META_COLUMNS)
         empty_df.to_csv(master_path, index=False, encoding="utf-8-sig")
@@ -427,22 +462,29 @@ def initialize_master_file(master_file: str | Path) -> None:
         print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Fichier principal existe déjà : {master_path}")
 
 
+def reset_master_file(master_file: str | Path) -> None:
+    """Réinitialise le fichier master pour repartir de zéro."""
+    master_path = Path(master_file)
+    empty_df = pd.DataFrame(columns=META_COLUMNS)
+    empty_df.to_csv(master_path, index=False, encoding="utf-8-sig")
+    print(f"{Fore.YELLOW}[RESET]{Style.RESET_ALL} Fichier principal réinitialisé : {master_path}")
+
+
 def load_master_file(master_file: str | Path) -> pd.DataFrame:
-    """
-    Charge le fichier principal CSV.
-    """
+    """Charge le fichier principal CSV."""
     initialize_master_file(master_file)
+
     df = pd.read_csv(master_file, encoding="utf-8-sig")
+
     for col in META_COLUMNS:
         if col not in df.columns:
             df[col] = None
+
     return df[META_COLUMNS]
 
 
 def save_master_file(df: pd.DataFrame, master_file: str | Path) -> None:
-    """
-    Sauvegarde le fichier principal.
-    """
+    """Sauvegarde le fichier principal."""
     df.to_csv(master_file, index=False, encoding="utf-8-sig")
     print(f"{Fore.GREEN}[OK]{Style.RESET_ALL} Fichier principal sauvegardé : {master_file}")
 
@@ -450,6 +492,56 @@ def save_master_file(df: pd.DataFrame, master_file: str | Path) -> None:
 # ============================================================
 # PIPELINE D'IMPORT
 # ============================================================
+
+def detect_source_type(file_path: str | Path) -> int:
+    """
+    Détecte automatiquement le type de fichier source selon les colonnes.
+
+    Type 1 :
+    Prénom | Nom | Téléphone | Wilaya | Commune | Prix/Montant
+
+    Type 2 :
+    Client | Téléphone | Wilaya | Commune | Prix/Montant
+
+    Type 3 - Guepex :
+    prénom | nom | téléphone | commune | wilaya destination | prix
+    """
+    df = read_table(file_path)
+    columns = set(df.columns)
+
+    type_1_base = {"Prénom", "Nom", "Téléphone", "Wilaya", "Commune"}
+    type_2_base = {"Client", "Téléphone", "Wilaya", "Commune"}
+    type_3_base = {
+        "prénom",
+        "nom",
+        "téléphone",
+        "commune",
+        "wilaya destination",
+        "prix",
+    }
+
+    value_columns = {"Prix", "Montant"}
+
+    has_value_column = bool(columns.intersection(value_columns))
+
+    if type_1_base.issubset(columns) and has_value_column:
+        return 1
+
+    if type_2_base.issubset(columns) and has_value_column:
+        return 2
+
+    if type_3_base.issubset(columns):
+        return 3
+
+    raise ValueError(
+        f"Impossible de détecter le type du fichier {file_path}.\n"
+        f"Colonnes trouvées : {list(df.columns)}\n"
+        "Structures acceptées :\n"
+        "- Type 1 : Prénom, Nom, Téléphone, Wilaya, Commune, Prix ou Montant\n"
+        "- Type 2 : Client, Téléphone, Wilaya, Commune, Prix ou Montant\n"
+        "- Type 3 : prénom, nom, téléphone, commune, wilaya destination, prix"
+    )
+
 
 def import_source_file(
     source_file: str | Path,
@@ -464,14 +556,17 @@ def import_source_file(
         transformed = transform_source_type_1(raw_df)
     elif source_type == 2:
         transformed = transform_source_type_2(raw_df)
+    elif source_type == 3:
+        transformed = transform_source_type_3(raw_df)
     else:
-        raise ValueError("source_type doit être 1 ou 2")
+        raise ValueError("source_type doit être 1, 2 ou 3")
 
     cleaned = clean_meta_dataframe(
         transformed,
         show_removed=True,
         show_duplicates_report=True,
     )
+
     return cleaned
 
 
@@ -482,13 +577,12 @@ def merge_into_master(
     """
     Fusionne les nouvelles données avec le fichier principal.
 
-    Si un téléphone existe déjà dans le master :
-    - on garde la variante avec la valeur la plus élevée
-    - on additionne les valeurs master + nouvel import
-    - on affiche un rapport structuré des doublons traités
+    Si un téléphone existe déjà :
+    - garde la variante avec la valeur la plus élevée
+    - additionne les valeurs
+    - conserve une seule ligne par téléphone
     """
     master_df = load_master_file(master_file)
-
     combined = pd.concat([master_df, imported_df], ignore_index=True)
 
     combined = clean_meta_dataframe(
@@ -498,6 +592,7 @@ def merge_into_master(
     )
 
     save_master_file(combined, master_file)
+
     return combined
 
 
@@ -506,11 +601,7 @@ def merge_into_master(
 # ============================================================
 
 def build_wilaya_stats(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Construit les stats par wilaya :
-    - nombre de clients
-    - pourcentage du total
-    """
+    """Construit les stats par wilaya."""
     stats_df = df.copy()
 
     stats_df["st"] = stats_df["st"].apply(clean_text)
@@ -531,24 +622,23 @@ def build_wilaya_stats(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     summary["percentage"] = (summary["count"] / total * 100).round(2)
+
     return summary
 
 
 def get_color_for_rank(index: int) -> str:
-    """
-    Couleur console selon le classement.
-    """
+    """Couleur console selon le classement."""
     if index < 3:
         return Fore.GREEN
+
     if index < 10:
         return Fore.YELLOW
+
     return Fore.CYAN
 
 
 def format_wilaya_stats_text(stats_df: pd.DataFrame, total_clients: int) -> str:
-    """
-    Formate le texte du log wilayas.
-    """
+    """Formate le texte du log wilayas."""
     lines = []
     lines.append("=" * 72)
     lines.append("REPARTITION DES CLIENTS LIVRES PAR WILAYA")
@@ -568,6 +658,7 @@ def format_wilaya_stats_text(stats_df: pd.DataFrame, total_clients: int) -> str:
         wilaya = str(row["wilaya"])
         count = int(row["count"])
         pct = float(row["percentage"])
+
         lines.append(f"{rank:<6}{wilaya:<25}{count:<15}{pct:<10.2f}")
 
     lines.append("-" * 72)
@@ -580,9 +671,7 @@ def format_wilaya_stats_text(stats_df: pd.DataFrame, total_clients: int) -> str:
 
 
 def print_wilaya_stats_colored(stats_df: pd.DataFrame, total_clients: int) -> None:
-    """
-    Affiche les stats wilayas dans le terminal avec couleurs.
-    """
+    """Affiche les stats wilayas dans le terminal avec couleurs."""
     print(f"\n{Fore.MAGENTA}{'=' * 72}{Style.RESET_ALL}")
     print(f"{Fore.MAGENTA}REPARTITION DES CLIENTS LIVRES PAR WILAYA{Style.RESET_ALL}")
     print(f"{Fore.MAGENTA}{'=' * 72}{Style.RESET_ALL}")
@@ -601,6 +690,7 @@ def print_wilaya_stats_colored(stats_df: pd.DataFrame, total_clients: int) -> No
         wilaya = str(row["wilaya"])
         count = int(row["count"])
         pct = float(row["percentage"])
+
         print(f"{color}{rank:<6}{wilaya:<25}{count:<15}{pct:<10.2f}{Style.RESET_ALL}")
 
     print(f"{Fore.WHITE}{'-' * 72}{Style.RESET_ALL}")
@@ -609,54 +699,106 @@ def print_wilaya_stats_colored(stats_df: pd.DataFrame, total_clients: int) -> No
 
 
 def save_wilaya_log(stats_df: pd.DataFrame, total_clients: int, log_file: str | Path) -> None:
-    """
-    Sauvegarde le log wilayas dans un fichier texte.
-    """
+    """Sauvegarde le log wilayas dans un fichier texte."""
     report_text = format_wilaya_stats_text(stats_df, total_clients)
     Path(log_file).write_text(report_text, encoding="utf-8")
+
     print(f"{Fore.GREEN}[OK]{Style.RESET_ALL} Log wilayas sauvegardé : {log_file}")
 
 
 # ============================================================
-# EXEMPLE D'UTILISATION
+# ARGUMENTS CLI
+# ============================================================
+
+def parse_args() -> argparse.Namespace:
+    """Parse les arguments passés en ligne de commande."""
+    parser = argparse.ArgumentParser(
+        description="Construit un fichier Meta Custom Audience à partir de 1 à 4 fichiers sources."
+    )
+
+    parser.add_argument(
+        "files",
+        nargs="+",
+        help="Fichiers sources Excel/CSV à importer. Maximum 4 fichiers.",
+    )
+
+    parser.add_argument(
+        "--master",
+        default=MASTER_FILE,
+        help=f"Nom du fichier master de sortie. Défaut : {MASTER_FILE}",
+    )
+
+    parser.add_argument(
+        "--wilaya-log",
+        default=WILAYA_LOG_FILE,
+        help=f"Nom du fichier log wilayas. Défaut : {WILAYA_LOG_FILE}",
+    )
+
+    parser.add_argument(
+        "--reset-master",
+        action="store_true",
+        help="Réinitialise le fichier master avant l'import.",
+    )
+
+    return parser.parse_args()
+
+
+# ============================================================
+# MAIN
 # ============================================================
 
 def main() -> None:
-    """
-    Exemple complet d'utilisation.
-    """
-    master_file = MASTER_FILE
-    wilaya_log_file = WILAYA_LOG_FILE
+    """Point d'entrée principal du script."""
+    args = parse_args()
 
-    # Ton fichier source livré
-    source_file_1 = "288_colis_livrés_all_05Mai2026.xlsx"
-    # source_file_2 = "clients_source_type_2.xlsx"
+    if len(args.files) > 4:
+        raise ValueError("Tu peux fournir au maximum 4 fichiers sources.")
 
-    initialize_master_file(master_file)
+    master_file = args.master
+    wilaya_log_file = args.wilaya_log
 
-    if Path(source_file_1).exists():
-        df1 = import_source_file(source_file_1, source_type=1)
-        merged_df = merge_into_master(master_file, df1)
+    if args.reset_master:
+        reset_master_file(master_file)
+    else:
+        initialize_master_file(master_file)
 
-        print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Après import fichier 1 : {len(merged_df)} clients uniques")
+    merged_df = None
 
-        # Stats par wilaya sur le fichier final Meta
+    for source_file in args.files:
+        source_path = Path(source_file)
+
+        if not source_path.exists():
+            print(f"{Fore.YELLOW}[WARN]{Style.RESET_ALL} Fichier introuvable : {source_file}")
+            continue
+
+        source_type = detect_source_type(source_path)
+
+        print(
+            f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Import du fichier : "
+            f"{source_file} | type détecté : {source_type}"
+        )
+
+        imported_df = import_source_file(source_path, source_type=source_type)
+        merged_df = merge_into_master(master_file, imported_df)
+
+        print(
+            f"{Fore.GREEN}[OK]{Style.RESET_ALL} Après import {source_file} : "
+            f"{len(merged_df)} clients uniques"
+        )
+
+    if merged_df is not None:
         wilaya_stats = build_wilaya_stats(merged_df)
 
-        # Affichage console coloré
-        print_wilaya_stats_colored(wilaya_stats, total_clients=len(merged_df))
+        print_wilaya_stats_colored(
+            wilaya_stats,
+            total_clients=len(merged_df),
+        )
 
-        # Sauvegarde log texte
-        save_wilaya_log(wilaya_stats, total_clients=len(merged_df), log_file=wilaya_log_file)
-
-    # Exemple futur si tu ajoutes un autre fichier
-    # if Path(source_file_2).exists():
-    #     df2 = import_source_file(source_file_2, source_type=2)
-    #     merged_df = merge_into_master(master_file, df2)
-    #     print(f"{Fore.CYAN}[INFO]{Style.RESET_ALL} Après import fichier 2 : {len(merged_df)} clients uniques")
-    #     wilaya_stats = build_wilaya_stats(merged_df)
-    #     print_wilaya_stats_colored(wilaya_stats, total_clients=len(merged_df))
-    #     save_wilaya_log(wilaya_stats, total_clients=len(merged_df), log_file=wilaya_log_file)
+        save_wilaya_log(
+            wilaya_stats,
+            total_clients=len(merged_df),
+            log_file=wilaya_log_file,
+        )
 
     print(f"{Fore.GREEN}[FIN]{Style.RESET_ALL} Pipeline terminé.")
 

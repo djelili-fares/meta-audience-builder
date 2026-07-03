@@ -1,0 +1,59 @@
+========================================================================
+REPARTITION DES CLIENTS LIVRES PAR WILAYA
+========================================================================
+Total clients uniques retenus dans le master : 325
+
+RANG  WILAYA                   NB CLIENTS     % TOTAL   
+------------------------------------------------------------------------
+1     Alger                    88             27.08     
+2     Constantine              20             6.15      
+3     Oran                     18             5.54      
+4     Batna                    12             3.69      
+5     Blida                    11             3.38      
+6     Tizi Ouzou               11             3.38      
+7     Boumerdès                9              2.77      
+8     Sidi Bel Abbès           9              2.77      
+9     Sétif                    9              2.77      
+10    Annaba                   9              2.77      
+11    Skikda                   8              2.46      
+12    Tipaza                   8              2.46      
+13    Mostaganem               7              2.15      
+14    Béjaïa                   7              2.15      
+15    Khenchela                6              1.85      
+16    Relizane                 5              1.54      
+17    Tiaret                   5              1.54      
+18    Tlemcen                  5              1.54      
+19    El Oued                  5              1.54      
+20    Jijel                    5              1.54      
+21    Laghouat                 5              1.54      
+22    Adrar                    4              1.23      
+23    Chlef                    4              1.23      
+24    Tébessa                  4              1.23      
+25    Oum El Bouaghi           4              1.23      
+26    Mila                     4              1.23      
+27    Guelma                   4              1.23      
+28    M'Sila                   4              1.23      
+29    Biskra                   3              0.92      
+30    Bouira                   3              0.92      
+31    Saïda                    3              0.92      
+32    Mascara                  3              0.92      
+33    El Tarf                  3              0.92      
+34    Aïn Témouchent           2              0.62      
+35    Bordj Bou Arreridj       2              0.62      
+36    Tindouf                  2              0.62      
+37    Djelfa                   2              0.62      
+38    El M'Ghair               2              0.62      
+39    Médéa                    2              0.62      
+40    Aïn Defla                1              0.31      
+41    Naâma                    1              0.31      
+42    El Meniaa                1              0.31      
+43    El Menia                 1              0.31      
+44    Tamanrasset              1              0.31      
+45    Ouargla                  1              0.31      
+46    Tissemsilt               1              0.31      
+47    Touggourt                1              0.31      
+------------------------------------------------------------------------
+Lecture business :
+- Les wilayas en haut du classement sont les plus représentées dans ta base clients livrés.
+- Elles peuvent servir pour prioriser le ciblage géographique, la logistique et l'analyse de rentabilité.
+========================================================================
