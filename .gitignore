@@ -3,11 +3,6 @@ venv/
 __pycache__/
 *.pyc
 
-# Data files (important pour ton cas)
-*.csv
-*.xlsx
-*.xls
-
 # OS
 .DS_Store
 Thumbs.db
