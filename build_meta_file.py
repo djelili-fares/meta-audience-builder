@@ -8,16 +8,25 @@ Utilisation :
 Exemple :
     python build_meta_file.py Anderson_03-07-2026.xlsx guepex_03-07-2026.xlsx Univer_03-07-2026.xlsx Zimou_03-07-2026.xlsx --master rachelle_clients_03-07-2026.csv --reset-master
 
+Exemple avec un fichier déjà au format Meta :
+    python build_meta_file.py rachelle_clients_complet_11-09-2026.csv
+
+Exemple avec génération d'une copie datée :
+    python build_meta_file.py fichier1.xlsx --master meta_custom_audience_master.csv --date-suffix
+
 Fonctionnalités :
 - Accepte de 1 à 4 fichiers sources en arguments
 - Lit des fichiers Excel / CSV
 - Détecte automatiquement la structure des colonnes
 - Accepte "Prix" ou "Montant" comme colonne de valeur
+- Reconnaît aussi les fichiers déjà au format Meta :
+  phone | fn | ln | ct | st | country | value
 - Normalise les noms, wilayas, communes et valeurs
 - Formate les numéros algériens au format international attendu par Meta
 - Déduplique les clients sur la base du téléphone
 - Additionne les valeurs d'achat par client unique
 - Sauvegarde un fichier principal compatible Meta
+- Peut générer automatiquement une copie datée du master (ex. _11-09-2026)
 - Génère des statistiques par wilaya
 - Sauvegarde un fichier log dédié des wilayas
 
@@ -29,6 +38,7 @@ from __future__ import annotations
 
 import argparse
 import re
+from datetime import datetime
 from pathlib import Path
 from typing import Optional, Tuple
 
@@ -66,6 +76,20 @@ DEFAULT_COUNTRY = "DZ"
 
 MASTER_FILE = "meta_custom_audience_master.csv"
 WILAYA_LOG_FILE = "wilaya_stats_log.txt"
+
+
+def add_date_suffix(file_path: str | Path, date_value: datetime | None = None) -> Path:
+    """Ajoute la date du jour au nom d'un fichier avant son extension.
+
+    Exemple :
+        meta_custom_audience_master.csv
+        -> meta_custom_audience_master_11-09-2026.csv
+    """
+    path = Path(file_path)
+    date_value = date_value or datetime.now()
+    date_suffix = date_value.strftime("%d-%m-%Y")
+
+    return path.with_name(f"{path.stem}_{date_suffix}{path.suffix}")
 
 
 # ============================================================
@@ -267,6 +291,34 @@ def transform_source_type_3(df: pd.DataFrame) -> pd.DataFrame:
     out["st"] = df["wilaya destination"].apply(clean_text)
     out["country"] = DEFAULT_COUNTRY
     out["value"] = df["prix"].apply(normalize_value)
+
+    return out
+
+
+def transform_source_type_4(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Type 4 - fichier déjà conforme au format Meta :
+    phone | fn | ln | ct | st | country | value
+
+    Le fichier est tout de même renormalisé afin de :
+    - sécuriser le format des téléphones
+    - nettoyer les champs texte
+    - forcer country=DZ
+    - normaliser les valeurs
+    """
+    missing = [col for col in META_COLUMNS if col not in df.columns]
+
+    if missing:
+        raise ValueError(f"Colonnes manquantes pour le fichier type 4 : {missing}")
+
+    out = pd.DataFrame()
+    out["phone"] = df["phone"].apply(normalize_phone_dz)
+    out["fn"] = df["fn"].apply(clean_text)
+    out["ln"] = df["ln"].apply(clean_text)
+    out["ct"] = df["ct"].apply(clean_text)
+    out["st"] = df["st"].apply(clean_text)
+    out["country"] = DEFAULT_COUNTRY
+    out["value"] = df["value"].apply(normalize_value)
 
     return out
 
@@ -505,6 +557,9 @@ def detect_source_type(file_path: str | Path) -> int:
 
     Type 3 - Guepex :
     prénom | nom | téléphone | commune | wilaya destination | prix
+
+    Type 4 - Meta :
+    phone | fn | ln | ct | st | country | value
     """
     df = read_table(file_path)
     columns = set(df.columns)
@@ -519,10 +574,14 @@ def detect_source_type(file_path: str | Path) -> int:
         "wilaya destination",
         "prix",
     }
+    type_4_base = set(META_COLUMNS)
 
     value_columns = {"Prix", "Montant"}
-
     has_value_column = bool(columns.intersection(value_columns))
+
+    # Le format Meta est testé explicitement.
+    if type_4_base.issubset(columns):
+        return 4
 
     if type_1_base.issubset(columns) and has_value_column:
         return 1
@@ -539,7 +598,8 @@ def detect_source_type(file_path: str | Path) -> int:
         "Structures acceptées :\n"
         "- Type 1 : Prénom, Nom, Téléphone, Wilaya, Commune, Prix ou Montant\n"
         "- Type 2 : Client, Téléphone, Wilaya, Commune, Prix ou Montant\n"
-        "- Type 3 : prénom, nom, téléphone, commune, wilaya destination, prix"
+        "- Type 3 : prénom, nom, téléphone, commune, wilaya destination, prix\n"
+        "- Type 4 : phone, fn, ln, ct, st, country, value"
     )
 
 
@@ -547,9 +607,7 @@ def import_source_file(
     source_file: str | Path,
     source_type: int,
 ) -> pd.DataFrame:
-    """
-    Importe un fichier source et le transforme au format Meta.
-    """
+    """Importe un fichier source et le transforme au format Meta."""
     raw_df = read_table(source_file)
 
     if source_type == 1:
@@ -558,8 +616,10 @@ def import_source_file(
         transformed = transform_source_type_2(raw_df)
     elif source_type == 3:
         transformed = transform_source_type_3(raw_df)
+    elif source_type == 4:
+        transformed = transform_source_type_4(raw_df)
     else:
-        raise ValueError("source_type doit être 1, 2 ou 3")
+        raise ValueError("source_type doit être 1, 2, 3 ou 4")
 
     cleaned = clean_meta_dataframe(
         transformed,
@@ -740,6 +800,15 @@ def parse_args() -> argparse.Namespace:
         help="Réinitialise le fichier master avant l'import.",
     )
 
+    parser.add_argument(
+        "--date-suffix",
+        action="store_true",
+        help=(
+            "Génère en fin d'exécution une copie du master avec la date du jour "
+            "au format JJ-MM-AAAA, sans modifier le nom du master de travail."
+        ),
+    )
+
     return parser.parse_args()
 
 
@@ -756,6 +825,20 @@ def main() -> None:
 
     master_file = args.master
     wilaya_log_file = args.wilaya_log
+    master_path_resolved = Path(master_file).resolve()
+
+    # Sécurité : ne jamais utiliser le même fichier à la fois comme source et master.
+    # Sinon les valeurs seraient additionnées à elles-mêmes ; avec --reset-master,
+    # le fichier source pourrait même être vidé avant sa lecture.
+    for source_file in args.files:
+        if Path(source_file).resolve() == master_path_resolved:
+            raise ValueError(
+                "Le fichier source et le fichier --master ne peuvent pas être le même fichier.\n"
+                f"Fichier concerné : {source_file}\n"
+                "Exemple sûr :\n"
+                "  python build_meta_file.py rachelle_clients_complet_11-09-2026.csv "
+                "--master meta_custom_audience_master.csv"
+            )
 
     if args.reset_master:
         reset_master_file(master_file)
@@ -799,6 +882,14 @@ def main() -> None:
             total_clients=len(merged_df),
             log_file=wilaya_log_file,
         )
+
+        if args.date_suffix:
+            dated_master_file = add_date_suffix(master_file)
+            save_master_file(merged_df, dated_master_file)
+            print(
+                f"{Fore.GREEN}[OK]{Style.RESET_ALL} "
+                f"Copie datée générée : {dated_master_file}"
+            )
 
     print(f"{Fore.GREEN}[FIN]{Style.RESET_ALL} Pipeline terminé.")
 
